@@ -1,0 +1,34 @@
+{
+  "id": "vn-02",
+  "draft": true,
+  "updated": "2026-09-16",
+
+  "basic": {
+    "displayName": "フオン T.",
+    "nationality": "ベトナム",
+    "countryCode": "VN",
+    "age": 20,
+    "gender": "男性",
+    "location": "ベトナム・ハイフォン市"
+  },
+
+  "info": {
+    "desiredJob": "介護",
+    "visa": { "value": "特定技能1号 介護", "note": "評価試験・日本語試験とも合格済み" },
+    "japanese": { "value": "JFT-Basic 222点 合格（2026年6月）", "note": "合格の基準は200点です。JLPT N4 と同じ水準にあたります" },
+    "experience": { "value": "介護の実務経験はありません", "note": "千代田国際語学院で日本語を2年3か月学習（2024年4月〜2026年6月）" },
+    "availableFrom": ""
+  },
+
+  "video": {
+    "youtube": "",
+    "duration": "",
+    "topics": []
+  },
+
+  "comment": "",
+
+  "photos": {
+    "face": ""
+  }
+}

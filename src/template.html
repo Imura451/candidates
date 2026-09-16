@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>{{displayName}}｜候補者のご紹介｜{{company.brand}}</title>
+<style>
+{{&css}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <img src="{{logo}}" alt="{{company.brand}}">
+    <div class="t"><b>候補者のご紹介</b>{{company.corp}}／{{company.brand}}</div>
+    <div class="id">候補者ID {{id}}{{#updated}}<br>更新 {{updated}}{{/updated}}</div>
+  </div>
+</header>
+
+{{#draft}}<div class="draft">サンプル／下書きです。社外への配布はしないでください。</div>{{/draft}}
+
+<main class="wrap">
+
+  <!-- 1. 顔写真と名前 -->
+  <section class="hero">
+    {{#faceImg}}<img class="face" src="{{faceImg}}" alt="{{displayName}}">{{/faceImg}}
+    {{^faceImg}}<div class="face noimg">写真<br>準備中</div>{{/faceImg}}
+    <div class="who">
+      <h1><span class="flag">{{&flag}}</span>{{displayName}}</h1>
+      {{#facts}}<p class="facts">{{facts}}</p>{{/facts}}
+      {{#desiredJob}}<p class="job">希望職種：{{desiredJob}}</p>{{/desiredJob}}
+    </div>
+  </section>
+
+  <!-- 2. 簡単な候補者情報 -->
+  {{#infoRows}}{{#_first}}
+  <section class="info">
+    <h2>基本情報</h2>
+    <table>
+  {{/_first}}
+      <tr><th>{{label}}</th><td>{{value}}{{#note}}<span>{{note}}</span>{{/note}}</td></tr>
+  {{#_last}}
+    </table>
+  </section>
+  {{/_last}}{{/infoRows}}
+
+  <!-- 3. インタビュー動画 -->
+  {{#video}}
+  <section class="video">
+    <h2>インタビュー動画<small>聞き手：{{interviewer}}{{#duration}}／{{duration}}{{/duration}}</small></h2>
+    <div class="frame">
+      <iframe src="{{embed}}" title="{{displayName}} インタビュー動画"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    {{#topics}}{{#_first}}<div class="topics"><b>この動画で話していること</b><ul>{{/_first}}<li>{{.}}</li>{{#_last}}</ul></div>{{/_last}}{{/topics}}
+    <p class="alt">再生できないときは <a href="{{watch}}" target="_blank" rel="noopener noreferrer">YouTubeで開く</a>（限定公開）</p>
+    <p class="print-only">動画：{{watch}}（YouTube 限定公開）</p>
+  </section>
+  {{/video}}
+
+  <!-- 4. 聞き手からひとこと（任意。comment が空なら出ない） -->
+  {{#comment}}
+  <section class="comment">
+    <h2>聞き手からひとこと</h2>
+    <p>{{comment}}</p>
+    <p class="by">{{company.person}}（{{company.corp}} {{company.title}}）</p>
+  </section>
+  {{/comment}}
+
+</main>
+
+<footer>
+  <div class="wrap">
+    詳しい経歴・資格は履歴書をご覧ください。<br>
+    {{company.corp}}／{{company.brand}}　{{company.site}}<br>
+    このページは検索エンジンに登録していません。URLをご存じの方だけがご覧になれます。候補者本人の個人情報保護のため、社外への転送はお控えください。<br>
+    候補者ID {{id}}　出力日 {{buildDate}}
+  </div>
+</footer>
+
+</body>
+</html>

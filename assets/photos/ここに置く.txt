@@ -1,0 +1,10 @@
+候補者の写真は、この中の「候補者ごとのフォルダ」に置きます。
+フォルダは node build.js を一度実行すると自動で作られます（名前はURLと同じ、例 vn-wy2t5ar3）。
+どのフォルダが誰のものかは docs/index.html（社内用一覧）で確認できます。
+
+  assets/photos/vn-wy2t5ar3/face.jpg   … 顔写真（自動で使われます）
+  assets/photos/vn-wy2t5ar3/work.jpg   … 作業風景（自動で使われます）
+
+jpg のほか png / webp / gif も使えます。
+置いたら、もう一度 node build.js を実行してください。
+1枚あたり 300KB 程度に縮小しておくとページが軽くなります。

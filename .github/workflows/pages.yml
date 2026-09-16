@@ -1,0 +1,49 @@
+# 候補者LPを GitHub Pages に自動公開する
+#
+# main ブランチに push されるたびに、node build.js を実行して docs/ を公開します。
+# GitHub の Settings → Pages → Source を「GitHub Actions」にしておく必要があります。
+name: 候補者LPを公開
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v4
+
+      - name: Node.js を用意
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 候補者ページをビルド
+        run: node build.js
+
+      - name: Pages の設定
+        uses: actions/configure-pages@v5
+
+      - name: 公開ファイルをまとめる
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: 公開
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>候補者一覧（社内用）｜ガイコクジンコネクト</title>
+<style>
+:root{--red:#C8102E;--ink:#1A1A1A;--gray:#6B7280;--line:#E3E3E5;--tint:#FAF7F8}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+  font-family:"Yu Gothic","游ゴシック","Yu Gothic Medium","YuGothic","Hiragino Kaku Gothic ProN","Meiryo",Arial,sans-serif;
+  font-size:14px;line-height:1.7;letter-spacing:.02em}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+header{border-bottom:2px solid var(--red)}
+header .wrap{display:flex;align-items:center;gap:12px;min-height:56px}
+header img{height:34px}
+header b{font-size:14px;letter-spacing:.06em}
+header span{font-size:12px;color:var(--gray)}
+.alert{background:var(--red);color:#fff;padding:8px 0;font-size:13px;font-weight:bold}
+.meta{color:var(--gray);font-size:12px;margin:14px 0 10px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:900px}
+th,td{border:1px solid var(--line);padding:8px 9px;text-align:left;vertical-align:top}
+th{background:var(--tint);font-size:11.5px;color:var(--gray);font-weight:normal;white-space:nowrap}
+td:first-child{min-width:190px}
+tr.draft td{background:#FDF3F5}
+.flag{width:24px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px;border:1px solid var(--line)}
+.flag svg{display:block;width:100%;height:100%}
+a.nm{color:var(--ink);font-weight:bold;text-decoration:none;font-size:14.5px}
+a.nm:hover{color:var(--red)}
+.tagd{display:inline-block;background:var(--red);color:#fff;font-size:10.5px;padding:0 5px;border-radius:2px;margin-left:6px;vertical-align:1px}
+.ng{color:var(--red);font-weight:bold}
+code{font-family:Consolas,monospace;font-size:11.5px;color:var(--gray);word-break:break-all}
+.cp{font-size:11px;border:1px solid var(--line);background:#fff;border-radius:2px;padding:1px 6px;cursor:pointer;margin-left:4px}
+footer{margin:26px 0 30px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--gray);line-height:1.9}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <img src="{{logo}}" alt="ガイコクジンコネクト">
+  <div><b>候補者一覧（社内用）</b><br><span>{{company.corp}}／{{company.brand}}</span></div>
+</div></header>
+<div class="alert"><div class="wrap">このページは社内用です。企業には各候補者ページのURLだけをお渡しください。</div></div>
+
+<div class="wrap">
+  <div class="meta">{{count}}件　最終ビルド {{buildDate}}</div>
+  <div class="scroll">
+  <table>
+    <tr>
+      <th>表示名</th><th>年齢・性別ほか</th><th>希望職種</th><th>日本語</th><th>入社可能</th>
+      <th>写真</th><th>動画</th><th>更新</th><th>企業に渡すURL</th>
+    </tr>
+    {{#cards}}
+    <tr class="{{#draft}}draft{{/draft}}">
+      <td>
+        <span class="flag">{{&flag}}</span>
+        <a class="nm" href="c/{{slug}}.html">{{displayName}}</a>{{#draft}}<span class="tagd">下書き</span>{{/draft}}
+        <br><code>{{id}} / {{file}}</code>
+      </td>
+      <td>{{facts}}</td>
+      <td>{{desiredJob}}</td>
+      <td>{{japanese}}</td>
+      <td>{{availableFrom}}</td>
+      <td>{{#hasFace}}あり{{/hasFace}}{{^hasFace}}<span class="ng">なし</span>{{/hasFace}}<br><code>assets/photos/{{slug}}/face.jpg</code></td>
+      <td>{{#hasVideo}}あり{{/hasVideo}}{{^hasVideo}}<span class="ng">なし</span>{{/hasVideo}}</td>
+      <td style="white-space:nowrap">{{updated}}</td>
+      <td>
+        {{#url}}<code class="u">{{url}}</code><button class="cp" data-full="{{url}}">コピー</button>{{/url}}
+        {{^url}}<code class="u">c/{{slug}}.html</code><button class="cp" data-u="c/{{slug}}.html">コピー</button>{{/url}}
+      </td>
+    </tr>
+    {{/cards}}
+  </table>
+  </div>
+  <footer>
+    写真が「なし」の候補者は、表示されているパスに <code>face.jpg</code> を置いて <code>node build.js</code> を実行してください。<br>
+    動画が「なし」の候補者は、JSONの <code>video.youtube</code> に YouTube（限定公開）のURLを書いてください。<br>
+    URLは候補者ごとに固定です（data/_slugs.json で管理）。JSONを編集して再ビルドしても、同じ id のURLは変わりません。<br>
+    候補者を非公開にするときは data/ からJSONを外し、<code>node build.js --clean</code> で該当HTMLを削除してください。
+  </footer>
+</div>
+
+<script>
+document.addEventListener('click', function (e) {
+  var b = e.target.closest ? e.target.closest('.cp') : null;
+  if (!b) return;
+  var url = b.getAttribute('data-full');
+  if (!url) url = location.href.replace(/index\.html$/, '').replace(/[^\/]*$/, '') + b.getAttribute('data-u');
+  navigator.clipboard && navigator.clipboard.writeText(url).then(function () {
+    var t = b.textContent; b.textContent = 'コピーしました'; setTimeout(function () { b.textContent = t; }, 1200);
+  });
+});
+</script>
+</body>
+</html>
