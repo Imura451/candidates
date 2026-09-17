@@ -81,6 +81,17 @@ h2 small{font-weight:normal; color:var(--gray); font-size:12px; letter-spacing:0
 .ask .alt{margin-top:10px}
 .ask .alt a{color:var(--red)}
 
+/* ---------- ご紹介終了の画面（404） ---------- */
+.gone{padding:40px 0 24px; border-bottom:0}
+.gone h1{margin:0; font-size:23px; line-height:1.45; letter-spacing:.01em; border-left:5px solid var(--red); padding-left:12px}
+.gone .lead{margin:14px 0 0; font-size:15px}
+.gone-box{margin-top:26px; border:1px solid var(--line); border-top:3px solid var(--red); border-radius:4px; padding:18px 18px 20px; background:var(--tint)}
+.gone-box b{font-size:15.5px}
+.gone-box p{margin:6px 0 0; font-size:14px}
+.gone-box .btn{margin-top:14px}
+.gone .note{margin-top:20px; font-size:12.5px; color:var(--gray); line-height:1.7}
+@media (max-width:480px){ .gone{padding-top:28px} .gone h1{font-size:20px} }
+
 /* ---------- フッター ---------- */
 footer{padding:16px 0 28px; font-size:11.5px; color:var(--gray); line-height:1.8; border-top:1px solid var(--line)}
 footer a.site{color:var(--red); text-decoration:none; border-bottom:1px solid currentColor}

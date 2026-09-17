@@ -414,7 +414,7 @@ function main() {
   for (const d of [DATA_DIR, OUT_DIR, PHOTO_DIR]) {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   }
-  for (const f of ['template.html', 'style.css', 'index.html']) {
+  for (const f of ['template.html', 'style.css', 'index.html', '404.html']) {
     if (!fs.existsSync(path.join(SRC_DIR, f))) {
       console.error(`エラー: src/${f} がありません。雛形ファイルを戻してください。`);
       process.exit(1);
@@ -562,6 +562,24 @@ function main() {
     count: published.length,
     candidates: published
   }, null, 2) + '\n', 'utf8');
+
+  /* 掲載を終えた候補者のURLを開いたときの画面（GitHub Pages が 404 のときに出します） */
+  const tpl404 = fs.readFileSync(path.join(SRC_DIR, '404.html'), 'utf8');
+  const subject404 = '候補者のご紹介について';
+  const body404 = [
+    `${COMPANY.brand}　${COMPANY.person} 様`, '',
+    '候補者のご紹介について、お問い合わせします。', '',
+    '御社名：',
+    'ご担当者名：',
+    'ご連絡先：', '',
+    'ご希望の職種：',
+    'ご希望の勤務地：',
+    'ご希望の時期：', ''
+  ].join('\r\n');
+  fs.writeFileSync(path.join(DOCS_DIR, '404.html'), render(tpl404, {
+    css, logo, company: COMPANY,
+    mailto: `mailto:${COMPANY.mail}?subject=${encodeURIComponent(subject404)}&body=${encodeURIComponent(body404)}`
+  }), 'utf8');
 
   fs.writeFileSync(path.join(DOCS_DIR, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
   fs.writeFileSync(path.join(DOCS_DIR, '.nojekyll'), '', 'utf8');

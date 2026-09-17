@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>ご紹介は終了しました｜{{company.brand}}</title>
+<style>
+{{&css}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <img src="{{logo}}" alt="{{company.brand}}">
+    <div class="t"><b>候補者のご紹介</b>{{company.corp}}／{{company.brand}}</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="gone">
+    <h1>この候補者のご紹介は終了しました</h1>
+    <p class="lead">
+      就職先が決まったため、このページの公開を終了しました。
+      ご覧いただき、ありがとうございました。
+    </p>
+
+    <div class="gone-box">
+      <b>ほかの候補者をご紹介できます</b>
+      <p>
+        同じ職種・条件でお探しでしたら、あらためてご案内いたします。
+        ご希望の職種、勤務地、時期をお知らせください。
+      </p>
+      <a class="btn" href="{{mailto}}">候補者のご紹介について問い合わせる<small>メールが立ち上がります</small></a>
+      <p class="alt">
+        ボタンが使えないときは <a href="mailto:{{company.mail}}">{{company.mail}}</a> 宛にご連絡ください。
+      </p>
+    </div>
+
+    <p class="note">
+      URLの入力に誤りがある場合も、この画面が出ます。
+      お手元のリンクをもう一度ご確認ください。
+    </p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    {{company.corp}}／{{company.brand}}　<a class="site" href="{{company.site}}" target="_blank" rel="noopener noreferrer">会社サイトを見る</a>
+  </div>
+</footer>
+
+</body>
+</html>
