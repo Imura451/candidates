@@ -1,0 +1,36 @@
+{
+  "id": "ph-02",
+  "draft": true,
+  "updated": "2026-09-17",
+
+  "basic": {
+    "displayName": "ジュリー S.",
+    "nationality": "フィリピン",
+    "countryCode": "PH",
+    "age": 34,
+    "gender": "女性",
+    "location": "フィリピン・リサール州アンティポロ市"
+  },
+
+  "info": {
+    "desiredJob": "食品製造（飲食料品製造業）",
+    "visa": { "value": "特定技能1号 飲食料品製造業", "note": "評価試験・日本語試験とも合格済み（2026年）" },
+    "japanese": { "value": "JFT-Basic 239点 合格（2026年4月）", "note": "合格の基準は200点、満点は250点です。文字と語彙は満点でした" },
+    "japanStay": "",
+    "experience": { "value": "食品製造の実務経験はありません", "note": "現在はコールセンターでカスタマー対応を担当しています（2025年12月〜）" },
+    "workArea": "",
+    "availableFrom": ""
+  },
+
+  "video": {
+    "youtube": "",
+    "duration": "",
+    "topics": []
+  },
+
+  "comment": "",
+
+  "photos": {
+    "face": ""
+  }
+}
