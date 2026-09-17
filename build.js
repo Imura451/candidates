@@ -67,6 +67,7 @@ const PAGES_BASE = 'https://imura451.github.io/candidates/';
 const INFO_ROWS = [
   ['visa', '在留資格'],
   ['japanese', '日本語'],
+  ['japanStay', '日本での生活'],
   ['experience', '実務経験'],
   ['availableFrom', '入社可能時期']
 ];
