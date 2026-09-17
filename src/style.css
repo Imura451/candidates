@@ -88,22 +88,22 @@ footer a.site{color:var(--red); text-decoration:none; border-bottom:1px solid cu
 /* ================= 印刷（A4縦・1枚） ================= */
 .print-only{display:none}
 @media print{
-  @page{size:A4 portrait; margin:12mm 16mm}
+  @page{size:A4 portrait; margin:10mm 15mm}
   html,body{background:#fff}
-  body{font-size:10.5pt; line-height:1.55; letter-spacing:0}
+  body{font-size:9.8pt; line-height:1.45; letter-spacing:0}
   .wrap{max-width:none; padding:0}
   a{color:var(--ink); text-decoration:none}
   .frame,.video .alt,.btn{display:none}
-  .ask .lead{font-size:9.5pt}
-  .ask .alt{margin-top:1.5mm; font-size:10pt; color:var(--ink)}
+  .ask .lead{font-size:9pt}
+  .ask .alt{margin-top:1mm; font-size:9.5pt; color:var(--ink)}
   .print-only{display:block; font-size:9.5pt}
   .draft{-webkit-print-color-adjust:exact; print-color-adjust:exact}
-  .hero{flex-direction:row; padding:4mm 0 4mm; gap:8mm}
+  .hero{flex-direction:row; padding:2.5mm 0 3mm; gap:7mm}
   .face{width:30mm; height:40mm}
   .hero h1{font-size:18pt}
-  section{padding:3mm 0; break-inside:avoid; page-break-inside:avoid}
-  h2{color:var(--ink); font-size:11pt; margin-bottom:2mm}
-  .info th,.info td{padding:1.8mm 0; font-size:10pt}
+  section{padding:2.2mm 0; break-inside:avoid; page-break-inside:avoid}
+  h2{color:var(--ink); font-size:10.5pt; margin-bottom:1.5mm}
+  .info th,.info td{padding:1.3mm 0; font-size:9.5pt}
   .info th{padding-right:4mm}
-  footer{font-size:8pt; line-height:1.5; padding:2.5mm 0 0}
+  footer{font-size:7.6pt; line-height:1.45; padding:2mm 0 0}
 }
