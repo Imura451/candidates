@@ -69,6 +69,7 @@ const INFO_ROWS = [
   ['japanese', '日本語'],
   ['japanStay', '日本での生活'],
   ['experience', '実務経験'],
+  ['workArea', '希望勤務地'],
   ['availableFrom', '入社可能時期']
 ];
 
