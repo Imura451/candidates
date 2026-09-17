@@ -83,7 +83,8 @@ h2 small{font-weight:normal; color:var(--gray); font-size:12px; letter-spacing:0
 
 /* ---------- フッター ---------- */
 footer{padding:16px 0 28px; font-size:11.5px; color:var(--gray); line-height:1.8; border-top:1px solid var(--line)}
-footer a.site{color:var(--red); text-decoration:none; border-bottom:1px solid currentColor; white-space:nowrap}
+footer a.site{color:var(--red); text-decoration:none; border-bottom:1px solid currentColor}
+footer .print-only{word-break:break-all}
 
 /* ================= 印刷（A4縦・1枚） ================= */
 .print-only{display:none}

@@ -49,7 +49,9 @@ const COMPANY = {
   person: '井村 稔',
   title: '代表取締役',
   mail: 'gaikokujin18@gmail.com',
-  site: 'https://gaikokujinconnect.jp'
+  // 独自ドメイン gaikokujinconnect.jp はまだ使えません（DNSに登録がありません）。
+  // 取得して Cloudflare につないだら、ここを差し替えてください。
+  site: 'https://gaikokujinconnect.d4station-info.workers.dev'
 };
 
 /* ------------------------------------------------------------------ *
