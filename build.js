@@ -41,13 +41,14 @@ const IN_CI = !!process.env.GITHUB_ACTIONS;
 
 /* ------------------------------------------------------------------ *
  * 会社情報（ここだけ直せば全ページに反映されます）
- * 連絡先はページに載せない方針なので、電話・メールは持ちません。
+ * 電話番号と住所はページに載せません。問い合わせはメールに一本化します。
  * ------------------------------------------------------------------ */
 const COMPANY = {
   brand: 'ガイコクジンコネクト',
   corp: '株式会社Minobordo',
   person: '井村 稔',
   title: '代表取締役',
+  mail: 'gaikokujin18@gmail.com',
   site: 'https://gaikokujinconnect.jp'
 };
 
@@ -359,6 +360,18 @@ function buildView(c, slug, logo) {
   const faceImg = findPhoto((c.photos || {}).face, id, slug, 'face');
   if (!faceImg) warn(`${id}: 顔写真がありません → assets/photos/${slug}/face.jpg を置いてください`);
 
+  /* 問い合わせボタン（候補者IDを件名に入れたメールが立ち上がる） */
+  const subject = `候補者ID ${id}（${displayName}）について`;
+  const mailBody = [
+    `${COMPANY.brand}　${COMPANY.person} 様`, '',
+    `候補者ID ${id}（${displayName}）について、お問い合わせします。`, '',
+    '御社名：',
+    'ご担当者名：',
+    'ご連絡先：', '',
+    'ご希望（オンライン面接の申込／履歴書の請求／その他）：', ''
+  ].join('\r\n');
+  const mailto = `mailto:${COMPANY.mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+
   return {
     id,
     slug,
@@ -375,6 +388,7 @@ function buildView(c, slug, logo) {
     video,
     comment: s(c.comment),
     faceImg,
+    mailto,
     buildDate: new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })
   };
 }
