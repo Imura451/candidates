@@ -304,6 +304,16 @@ function findPhoto(p, id, slug, kind) {
   return '';
 }
 
+/** assets/photos/<slug>/face.* の実ファイルを探す。無ければ空文字 */
+function photoFile(slug) {
+  const dir = path.join(PHOTO_DIR, slug);
+  for (const ext of Object.keys(MIME)) {
+    const p = path.join(dir, 'face' + ext);
+    if (fs.existsSync(p)) return p;
+  }
+  return '';
+}
+
 /**
  * YouTube のURLから動画IDを取り出す。
  * youtu.be/ID、youtube.com/watch?v=ID、/embed/ID、/shorts/ID、/live/ID、IDだけ に対応。
@@ -476,6 +486,16 @@ function main() {
     fs.writeFileSync(path.join(OUT_DIR, slug + '.html'), html, 'utf8');
     written.add(slug + '.html');
 
+    /* 外部サイトが一覧を作れるよう、顔写真を単体のファイルとしても書き出す */
+    const src = photoFile(slug);
+    let photoName = '';
+    if (src) {
+      photoName = slug + path.extname(src).toLowerCase();
+      fs.copyFileSync(src, path.join(OUT_DIR, photoName));
+      written.add(photoName);
+    }
+
+    const b = c.basic || {};
     const info = c.info || {};
     cards.push({
       id, slug, file: f,
@@ -489,7 +509,28 @@ function main() {
       hasFace: !!view.faceImg,
       hasVideo: !!view.video,
       updated: view.updated || '—',
-      url: base ? `${base}c/${slug}.html` : ''
+      url: base ? `${base}c/${slug}.html` : '',
+      /* candidates.json 用 */
+      feed: {
+        id: slug,
+        url: base ? `${base}c/${slug}.html` : '',
+        photo: photoName && base ? `${base}c/${photoName}` : '',
+        displayName: view.displayName,
+        nationality: s(b.nationality),
+        countryCode: (s(b.countryCode) || '').toUpperCase(),
+        age: Number(s(b.age)) || null,
+        gender: s(b.gender),
+        location: s(b.location),
+        desiredJob: view.desiredJob,
+        visa: (norm(info.visa) || {}).value || '',
+        japanese: (norm(info.japanese) || {}).value || '',
+        japanStay: (norm(info.japanStay) || {}).value || '',
+        experience: (norm(info.experience) || {}).value || '',
+        workArea: (norm(info.workArea) || {}).value || '',
+        availableFrom: (norm(info.availableFrom) || {}).value || '',
+        hasVideo: !!view.video,
+        updated: view.updated || ''
+      }
     });
 
     console.log(`  生成: docs/c/${slug}.html  ← ${f}  (${view.displayName})`);
@@ -512,6 +553,15 @@ function main() {
     count: cards.length,
     buildDate: new Date().toLocaleString('ja-JP')
   }), 'utf8');
+
+  /* 外部サイト向けの一覧データ。下書きは載せません */
+  const published = cards.filter(c => !c.draft).map(c => c.feed);
+  fs.writeFileSync(path.join(DOCS_DIR, 'candidates.json'), JSON.stringify({
+    _説明: '公開中の候補者一覧です。ホームページ側でこのファイルを読み込めば、候補者の追加・削除が自動で反映されます。下書きの候補者は含みません。',
+    updated: new Date().toISOString(),
+    count: published.length,
+    candidates: published
+  }, null, 2) + '\n', 'utf8');
 
   fs.writeFileSync(path.join(DOCS_DIR, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
   fs.writeFileSync(path.join(DOCS_DIR, '.nojekyll'), '', 'utf8');
