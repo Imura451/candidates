@@ -367,6 +367,7 @@ function buildView(c, slug, logo) {
     watch: `https://youtu.be/${ytid}`,
     duration: s(v.duration),
     interviewer: s(v.interviewer) || `${COMPANY.person}（${COMPANY.corp} ${COMPANY.title}）`,
+    note: s(v.note),
     topics: arr(v.topics)
   } : null;
 

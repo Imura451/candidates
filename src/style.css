@@ -60,6 +60,7 @@ h2 small{font-weight:normal; color:var(--gray); font-size:12px; letter-spacing:0
 /* ---------- 3. インタビュー動画 ---------- */
 .frame{position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:4px; overflow:hidden}
 .frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+.vnote{margin:12px 0 0; font-size:14px; border-left:3px solid var(--red); padding-left:10px; line-height:1.65}
 .topics{margin-top:14px; font-size:14px}
 .topics b{display:block; font-size:12.5px; color:var(--gray); font-weight:normal; margin-bottom:2px}
 .topics ul{margin:0; padding-left:1.3em}

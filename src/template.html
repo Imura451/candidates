@@ -56,6 +56,7 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
+    {{#note}}<p class="vnote">{{note}}</p>{{/note}}
     {{#topics}}{{#_first}}<div class="topics"><b>この動画で話していること</b><ul>{{/_first}}<li>{{.}}</li>{{#_last}}</ul></div>{{/_last}}{{/topics}}
     <p class="alt">再生できないときは <a href="{{watch}}" target="_blank" rel="noopener noreferrer">YouTubeで開く</a>（限定公開）</p>
     <p class="print-only">動画：{{watch}}（YouTube 限定公開）</p>
