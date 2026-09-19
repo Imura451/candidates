@@ -650,11 +650,14 @@ function main() {
     else warn(`docs/c/${o} は元データがありません。消すなら node build.js --clean`);
   }
 
-  /* 一覧ページ・robots.txt */
-  fs.writeFileSync(path.join(DOCS_DIR, 'index.html'), render(tplIndex, {
+  /* 社内用の一覧。
+     公開すると、人材バンクのURLを削るだけで誰でも開けてしまうため、
+     docs/ の外（このフォルダの直下）に書き出します。GitHubにも上がりません。 */
+  fs.writeFileSync(path.join(ROOT, '社内用一覧.html'), render(tplIndex, {
     logo, company: COMPANY,
     cards,
     count: cards.length,
+    hrefPrefix: 'docs/',
     buildDate: new Date().toLocaleString('ja-JP')
   }), 'utf8');
 
@@ -702,8 +705,9 @@ function main() {
   }
   rows.forEach((r, i) => { r._last = i === rows.length - 1; });
 
-  /* 検索エンジンとSNS向けの情報。ドメインを移したら base が変わるだけで、全部が追従します */
-  const bankUrl = base ? base + 'bank.html' : '';
+  /* 検索エンジンとSNS向けの情報。ドメインを移したら base が変わるだけで、全部が追従します。
+     人材バンクは「フォルダのトップ」を正式なURLにします（.../candidates/）。 */
+  const bankUrl = base;
   const ogpSrc = path.join(ASSET_DIR, 'ogp.png');
   let ogpUrl = '';
   if (fs.existsSync(ogpSrc)) {
@@ -714,7 +718,7 @@ function main() {
   }
 
   const bankCss = fs.readFileSync(path.join(SRC_DIR, 'bank.css'), 'utf8').replace(/\s+$/, '');
-  fs.writeFileSync(path.join(DOCS_DIR, 'bank.html'), render(
+  fs.writeFileSync(path.join(DOCS_DIR, 'index.html'), render(
     fs.readFileSync(path.join(SRC_DIR, 'bank.html'), 'utf8'), {
       css: bankCss, logo, company: COMPANY,
       cards: bankCards,
@@ -730,6 +734,20 @@ function main() {
       seoDesc: '介護・建設・宿泊・外食など、特定技能をはじめとする在留資格で日本での就職を希望する外国人材を掲載しています。'
              + '代表が一人ずつ面談した動画を、そのままご覧いただけます。愛知県大府市の株式会社Minobordo（ガイコクジンコネクト）が運営しています。'
     }), 'utf8');
+
+  /* 以前お配りした bank.html を開いた方を、人材バンクへ送ります */
+  fs.writeFileSync(path.join(DOCS_DIR, 'bank.html'), [
+    '<!DOCTYPE html>',
+    '<html lang="ja"><head><meta charset="UTF-8">',
+    '<meta name="robots" content="noindex,follow">',
+    '<meta http-equiv="refresh" content="0; url=./">',
+    base ? `<link rel="canonical" href="${base}">` : '',
+    '<title>ガイコクジンコネクト人材バンク</title>',
+    '</head><body style="font-family:sans-serif;padding:40px;line-height:1.9">',
+    '<p>人材バンクのページへ移動します。</p>',
+    '<p><a href="./">自動で移動しないときはこちらを押してください</a></p>',
+    '</body></html>', ''
+  ].filter(Boolean).join('\n'), 'utf8');
 
   /* 存在しないURLを開いたときの画面 */
   fs.writeFileSync(path.join(DOCS_DIR, '404.html'), render(tplGone, goneView), 'utf8');
@@ -785,13 +803,14 @@ function main() {
   }
   fs.writeFileSync(path.join(DOCS_DIR, '.nojekyll'), '', 'utf8');
 
-  console.log(`\n完了: ${cards.length}件を docs/c/ に出力しました。一覧は docs/index.html です。`);
+  console.log(`\n完了: ${cards.length}件を出力しました。`);
+  console.log('  社内用の一覧 → 社内用一覧.html（このフォルダの中。公開されません）');
 
   /* 企業に渡すURL */
   if (base) {
     console.log('\n--- 企業に渡すURL ---');
     for (const c of cards) console.log(`  ${c.displayName}${c.draft ? '（下書き）' : ''}: ${c.url}`);
-    console.log(`  社内用一覧: ${base}`);
+    console.log(`  人材バンク: ${base}`);
   } else {
     console.log('\n（GitHub に登録すると、ここに企業へ渡すURLが表示されます）');
   }

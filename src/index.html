@@ -42,7 +42,7 @@ footer{margin:26px 0 30px;padding-top:14px;border-top:1px solid var(--line);font
   <img src="{{logo}}" alt="ガイコクジンコネクト">
   <div><b>候補者一覧（社内用）</b><br><span>{{company.corp}}／{{company.brand}}</span></div>
 </div></header>
-<div class="alert"><div class="wrap">このページは社内用です。企業には各候補者ページのURLだけをお渡しください。</div></div>
+<div class="alert"><div class="wrap">このページは社内用です。公開されていません。企業には各候補者ページのURLだけをお渡しください。</div></div>
 
 <div class="wrap">
   <div class="meta">{{count}}件　最終ビルド {{buildDate}}</div>
@@ -56,7 +56,7 @@ footer{margin:26px 0 30px;padding-top:14px;border-top:1px solid var(--line);font
     <tr class="{{#draft}}draft{{/draft}}">
       <td>
         <span class="flag">{{&flag}}</span>
-        <a class="nm" href="c/{{slug}}.html">{{displayName}}</a>{{#draft}}<span class="tagd">下書き</span>{{/draft}}
+        <a class="nm" href="{{hrefPrefix}}c/{{slug}}.html">{{displayName}}</a>{{#draft}}<span class="tagd">下書き</span>{{/draft}}
         <br><code>{{id}} / {{file}}</code>
       </td>
       <td>{{facts}}</td>
@@ -68,7 +68,7 @@ footer{margin:26px 0 30px;padding-top:14px;border-top:1px solid var(--line);font
       <td style="white-space:nowrap">{{updated}}</td>
       <td>
         {{#url}}<code class="u">{{url}}</code><button class="cp" data-full="{{url}}">コピー</button>{{/url}}
-        {{^url}}<code class="u">c/{{slug}}.html</code><button class="cp" data-u="c/{{slug}}.html">コピー</button>{{/url}}
+        {{^url}}<code class="u">c/{{slug}}.html</code><button class="cp" data-u="{{hrefPrefix}}c/{{slug}}.html">コピー</button>{{/url}}
       </td>
     </tr>
     {{/cards}}
