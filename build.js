@@ -69,8 +69,17 @@ const PAGES_BASE = 'https://imura451.github.io/candidates/';
  * 人材バンクの絞り込みで使う区分
  * ------------------------------------------------------------------ */
 
-/* 在留資格。この順に並びます */
-const RESIDENCES = ['特定技能1号', '特定技能2号', '技術・人文知識・国際業務', '育成就労・技能実習生'];
+/* 在留資格。この順に並びます。JSONの info.residence にはこの文字を書きます */
+const RESIDENCES = ['特定技能1号', '特定技能2号', '育成就労・技能実習', '技人国', '未定'];
+
+/* カードと個別ページでの表示（書いていないものは、そのまま出します） */
+const RES_CARD = {
+  '技人国': '技人国（技術・人文知識・国際業務）',
+  '未定': '在留資格は検討中'
+};
+
+/* 絞り込みボタンでの表示 */
+const RES_PILL = { '未定': '未定・検討中' };
 
 /* 特定技能1号の分野。この順に並びます。制度が変わったら足してください */
 const FIELDS = [
@@ -591,6 +600,7 @@ function main() {
         flag: view.flag,
         facts: view.facts,
         residence: view.residence,
+        residenceLabel: RES_CARD[view.residence] || view.residence,
         desiredJob: view.desiredJob,
         locKey: view.inJapan ? 'jp' : 'abroad',
         nationality: s(b.nationality),
@@ -680,7 +690,7 @@ function main() {
   }
   const resVals = byOrder(uniq(bankCards.map(c => c.residence)), RESIDENCES);
   if (resVals.length > 1) {
-    rows.push({ key: 'res', label: '在留資格', opts: resVals.map(v => ({ v, t: v })) });
+    rows.push({ key: 'res', label: '在留資格', opts: resVals.map(v => ({ v, t: RES_PILL[v] || v })) });
   }
   const fieldVals = byOrder(uniq([].concat(...bankCards.map(c => c.fieldsAttr.split(',')))), FIELDS);
   if (fieldVals.length > 1) {
