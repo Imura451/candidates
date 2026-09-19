@@ -466,7 +466,7 @@ function main() {
   for (const d of [DATA_DIR, OUT_DIR, PHOTO_DIR]) {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   }
-  for (const f of ['template.html', 'style.css', 'index.html', '404.html', 'bank.html', 'bank.css']) {
+  for (const f of ['template.html', 'style.css', 'index.html', '404.html', 'bank.html', 'bank.css', 'form.html']) {
     if (!fs.existsSync(path.join(SRC_DIR, f))) {
       console.error(`エラー: src/${f} がありません。雛形ファイルを戻してください。`);
       process.exit(1);
@@ -721,6 +721,7 @@ function main() {
   fs.writeFileSync(path.join(DOCS_DIR, 'index.html'), render(
     fs.readFileSync(path.join(SRC_DIR, 'bank.html'), 'utf8'), {
       css: bankCss, logo, company: COMPANY,
+      formHtml: render(fs.readFileSync(path.join(SRC_DIR, 'form.html'), 'utf8'), { company: COMPANY }),
       cards: bankCards,
       count: bankCards.length,
       hasCards: bankCards.length > 0,

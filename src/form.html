@@ -1,0 +1,150 @@
+<!-- ============================================================================
+     問い合わせフォーム（企業向け／送り出し機関向けを切り替え）
+     送り先は Cloudflare Worker の /api/contact。そこから Gmail と Lark へ届きます。
+     ============================================================================ -->
+<section class="wrap" id="contact"><div class="form-wrap">
+  <h2>お問い合わせ</h2>
+  <p class="form-lead">
+    どのパソコン・スマートフォンからでも送れます。メールソフトは必要ありません。
+  </p>
+
+  <div class="kinds" role="tablist">
+    <button type="button" class="kind on" data-kind="company">企業の方<small>候補者について相談する</small></button>
+    <button type="button" class="kind" data-kind="agency">送り出し機関の方<small>掲載を依頼する / Listing request</small></button>
+  </div>
+
+  <form id="cform" novalidate>
+    <input type="hidden" name="kind" id="fKind" value="企業からのお問い合わせ">
+    <input type="hidden" name="page" value="人材バンク">
+    <p class="hp"><label>この欄は空のままにしてください <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+    <div class="f2">
+      <p class="fld"><label for="fCompany"><span class="ja">会社名・機関名</span><span class="en">Company / Organization</span><i>必須</i></label>
+        <input id="fCompany" name="company" required autocomplete="organization"></p>
+      <p class="fld"><label for="fName"><span class="ja">お名前</span><span class="en">Your name</span><i>必須</i></label>
+        <input id="fName" name="name" required autocomplete="name"></p>
+    </div>
+
+    <div class="f2">
+      <p class="fld"><label for="fMail"><span class="ja">メールアドレス</span><span class="en">Email</span><i>必須</i></label>
+        <input id="fMail" name="email" type="email" required autocomplete="email" inputmode="email"></p>
+      <p class="fld"><label for="fTel"><span class="ja">電話番号</span><span class="en">Phone</span></label>
+        <input id="fTel" name="tel" autocomplete="tel" inputmode="tel"></p>
+    </div>
+
+    <div class="only-company">
+      <div class="f2">
+        <p class="fld"><label for="fJob">ご希望の職種・分野</label>
+          <input id="fJob" name="job" placeholder="介護、建設、宿泊 など"></p>
+        <p class="fld"><label for="fArea">勤務地</label>
+          <input id="fArea" name="area" placeholder="愛知県、千葉県 など"></p>
+      </div>
+      <p class="fld"><label for="fCand">気になる候補者（お分かりになれば）</label>
+        <input id="fCand" name="candidate" placeholder="ルイーサ E. さん など"></p>
+    </div>
+
+    <div class="only-agency" hidden>
+      <div class="f2">
+        <p class="fld"><label for="fCountry"><span class="ja">国・地域</span><span class="en">Country</span></label>
+          <input id="fCountry" name="country" placeholder="ベトナム / Vietnam"></p>
+        <p class="fld"><label for="fNum"><span class="ja">掲載したい人数</span><span class="en">Number of candidates</span></label>
+          <input id="fNum" name="number" placeholder="3"></p>
+      </div>
+      <p class="fld"><label for="fField2"><span class="ja">職種・分野</span><span class="en">Job field</span></label>
+        <input id="fField2" name="field" placeholder="介護 / Caregiving"></p>
+    </div>
+
+    <p class="fld"><label for="fMsg"><span class="ja">ご用件</span><span class="en">Message</span></label>
+      <textarea id="fMsg" name="message" rows="5" placeholder=""></textarea></p>
+
+    <p class="agree">
+      いただいた内容は、ご連絡と候補者のご紹介にのみ使用します。
+    </p>
+
+    <p class="submit"><button type="submit" class="btn-send" id="fSend">送信する</button></p>
+    <p class="fmsg" id="fMsgBox" hidden></p>
+  </form>
+
+  <div class="direct">
+    <p><b>メールソフトから直接お送りいただくこともできます。</b></p>
+    <p class="addr"><a href="mailto:{{company.mail}}">{{company.mail}}</a>　／　お電話 <a href="tel:09017284593">090-1728-4593</a></p>
+  </div>
+</div></section>
+
+<script>
+(function () {
+  var ENDPOINT = 'https://gaikokujinconnect.d4station-info.workers.dev/api/contact';
+  var form = document.getElementById('cform');
+  if (!form) return;
+  var box = document.getElementById('fMsgBox');
+  var send = document.getElementById('fSend');
+  var kindInput = document.getElementById('fKind');
+  var wrap = document.querySelector('.form-wrap');
+
+  var KINDS = {
+    company: { label: '企業からのお問い合わせ', btn: '送信する' },
+    agency:  { label: '送り出し機関からの掲載依頼', btn: '送信する / Send' }
+  };
+
+  document.querySelectorAll('.kind').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.kind').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      var k = b.getAttribute('data-kind');
+      kindInput.value = KINDS[k].label;
+      send.textContent = KINDS[k].btn;
+      document.querySelector('.only-company').hidden = (k !== 'company');
+      document.querySelector('.only-agency').hidden = (k !== 'agency');
+      wrap.classList.toggle('bilingual', k === 'agency');
+    });
+  });
+
+  function show(text, ok) {
+    box.textContent = text;
+    box.className = 'fmsg ' + (ok ? 'ok' : 'ng');
+    box.hidden = false;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var data = {};
+    new FormData(form).forEach(function (v, k) { data[k] = String(v).trim(); });
+
+    if (!data.company || !data.name || !data.email) {
+      show('会社名・お名前・メールアドレスをご入力ください。/ Please fill in the required fields.', false);
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) {
+      show('メールアドレスの形式をご確認ください。/ Please check your email address.', false);
+      return;
+    }
+
+    send.disabled = true;
+    send.textContent = '送信しています…';
+    box.hidden = true;
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
+      .then(function (d) {
+        if (d && d.ok) {
+          form.reset();
+          kindInput.value = KINDS[document.querySelector('.kind.on').getAttribute('data-kind')].label;
+          show('送信しました。ありがとうございます。2営業日以内にご返信します。/ Thank you. We will reply within 2 business days.', true);
+        } else {
+          show('送信できませんでした。お手数ですが gaikokujin18@gmail.com 宛にお送りください。', false);
+        }
+      })
+      .catch(function () {
+        show('送信できませんでした。お手数ですが gaikokujin18@gmail.com 宛にお送りください。', false);
+      })
+      .finally(function () {
+        send.disabled = false;
+        send.textContent = KINDS[document.querySelector('.kind.on').getAttribute('data-kind')].btn;
+      });
+  });
+})();
+</script>

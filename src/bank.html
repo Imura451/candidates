@@ -37,7 +37,7 @@
     <a href="{{company.site}}/profile.html">代表紹介</a>
     <a href="{{company.site}}/contact.html">会社概要</a>
     <a href="tel:09017284593" class="btn-tel">090-1728-4593</a>
-    <a href="mailto:{{company.mail}}?subject=%E4%BA%BA%E6%9D%90%E3%83%90%E3%83%B3%E3%82%AF%E3%81%AE%E5%80%99%E8%A3%9C%E8%80%85%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" class="btn-s">メールで相談</a>
+    <a href="#contact" class="btn-s">お問い合わせ</a>
   </nav>
 </div></header>
 
@@ -130,7 +130,7 @@
     </div>
     <div class="way">
       <b>メール</b><br>
-      <a class="btn-mail" href="mailto:{{company.mail}}?subject=%E4%BA%BA%E6%9D%90%E3%83%90%E3%83%B3%E3%82%AF%E3%81%AE%E5%80%99%E8%A3%9C%E8%80%85%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">メールで問い合わせる</a>
+      <a class="btn-mail" href="#contact">フォームで問い合わせる</a>
       <p class="sml">{{company.mail}}</p>
     </div>
   </div>
@@ -153,11 +153,13 @@
       <p class="note2">掲載の条件や費用は、ケースによって異なります。まずはご相談ください。</p>
     </div>
     <div class="sb-r">
-      <a class="btn-big" href="mailto:{{company.mail}}?subject=%E4%BA%BA%E6%9D%90%E3%83%90%E3%83%B3%E3%82%AF%E3%81%B8%E3%81%AE%E6%8E%B2%E8%BC%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">掲載について問い合わせる</a>
+      <a class="btn-big" href="#contact">掲載について問い合わせる</a>
       <p class="sb-note">日本語・英語でご連絡いただけます</p>
     </div>
   </div>
 </div></section>
+
+{{&formHtml}}
 
 <section class="wrap" id="scope"><div class="scope">
   <h3>対応できる在留資格と分野</h3>
