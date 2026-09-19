@@ -1,0 +1,37 @@
+{
+  "id": "vn-04",
+  "draft": true,
+  "updated": "2026-09-19",
+
+  "basic": {
+    "displayName": "フン P.",
+    "nationality": "ベトナム",
+    "countryCode": "VN",
+    "age": 33,
+    "gender": "男性",
+    "location": "日本・三重県津市（在留中）"
+  },
+
+  "info": {
+    "desiredJob": "建設（鉄筋施工・鉄筋組立て）",
+    "visa": { "value": "技能実習2号 鉄筋施工（在留期限 2027年1月9日）", "note": "実習修了後の在留資格については、別途ご相談ください" },
+    "japanese": "",
+    "japanStay": { "value": "2年8か月（2024年1月〜、現在も滞在中）", "note": "三重県で技能実習中。日本での生活に慣れています" },
+    "experience": { "value": "鉄筋施工・鉄筋組立て 2年8か月（日本・三重県）", "note": "鉄筋組立て作業の技能検定（随時3級）実技試験に合格しました（2026年2月）" },
+    "workArea": "",
+    "availableFrom": ""
+  },
+
+  "video": {
+    "youtube": "https://youtu.be/SKvSF84W044",
+    "duration": "約27分",
+    "note": "",
+    "topics": []
+  },
+
+  "comment": "",
+
+  "photos": {
+    "face": ""
+  }
+}
