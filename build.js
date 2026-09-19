@@ -702,6 +702,17 @@ function main() {
   }
   rows.forEach((r, i) => { r._last = i === rows.length - 1; });
 
+  /* 検索エンジンとSNS向けの情報。ドメインを移したら base が変わるだけで、全部が追従します */
+  const bankUrl = base ? base + 'bank.html' : '';
+  const ogpSrc = path.join(ASSET_DIR, 'ogp.png');
+  let ogpUrl = '';
+  if (fs.existsSync(ogpSrc)) {
+    fs.copyFileSync(ogpSrc, path.join(DOCS_DIR, 'ogp.png'));
+    ogpUrl = base ? base + 'ogp.png' : '';
+  } else {
+    warn('assets/ogp.png がありません。SNSで共有したときの画像が出ません');
+  }
+
   const bankCss = fs.readFileSync(path.join(SRC_DIR, 'bank.css'), 'utf8').replace(/\s+$/, '');
   fs.writeFileSync(path.join(DOCS_DIR, 'bank.html'), render(
     fs.readFileSync(path.join(SRC_DIR, 'bank.html'), 'utf8'), {
@@ -712,13 +723,66 @@ function main() {
       rows,
       residences: RESIDENCES,
       fields: FIELDS.join('／'),
-      today: new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })
+      today: new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }),
+      pageUrl: bankUrl,
+      ogpUrl,
+      seoTitle: '特定技能の人材バンク｜面談動画つきで外国人材をご紹介｜ガイコクジンコネクト',
+      seoDesc: '介護・建設・宿泊・外食など、特定技能をはじめとする在留資格で日本での就職を希望する外国人材を掲載しています。'
+             + '代表が一人ずつ面談した動画を、そのままご覧いただけます。愛知県大府市の株式会社Minobordo（ガイコクジンコネクト）が運営しています。'
     }), 'utf8');
 
   /* 存在しないURLを開いたときの画面 */
   fs.writeFileSync(path.join(DOCS_DIR, '404.html'), render(tplGone, goneView), 'utf8');
 
-  fs.writeFileSync(path.join(DOCS_DIR, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
+  /* ------------------------------------------------------------------ *
+   * 検索エンジン向けの設定
+   *
+   * 人材バンク（bank.html）だけを検索に載せます。
+   * 個別の候補者ページと社内用一覧は、各ページの noindex で除きます。
+   * robots.txt で /c/ を通行止めにはしません。通行止めにすると
+   * 検索エンジンがページを読めず、noindex の指示も読めなくなるためです。
+   * ------------------------------------------------------------------ */
+  fs.writeFileSync(path.join(DOCS_DIR, 'robots.txt'), [
+    '# 人材バンク（/bank.html）だけを検索エンジンに載せています。',
+    '# 個別の候補者ページ（/c/…）と社内用一覧（/index.html）は、',
+    '# 各ページの noindex で検索結果から除いています。',
+    'User-agent: *',
+    'Allow: /',
+    '',
+    base ? `Sitemap: ${base}sitemap.xml` : '# Sitemap: （公開URLが決まると入ります）',
+    ''
+  ].join('\n'), 'utf8');
+
+  /* サイトマップ。人材バンクだけを載せます */
+  if (base) {
+    const lastmod = new Date().toISOString().slice(0, 10);
+    fs.writeFileSync(path.join(DOCS_DIR, 'sitemap.xml'), [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      '  <url>',
+      `    <loc>${base}bank.html</loc>`,
+      `    <lastmod>${lastmod}</lastmod>`,
+      '    <changefreq>weekly</changefreq>',
+      '    <priority>1.0</priority>',
+      '  </url>',
+      '</urlset>',
+      ''
+    ].join('\n'), 'utf8');
+  }
+
+  /* public/ に置いたファイルは、そのまま docs/ へコピーします。
+     Google Search Console の所有権確認ファイルなどを置く場所です。 */
+  const PUB_DIR = path.join(ROOT, 'public');
+  if (fs.existsSync(PUB_DIR)) {
+    for (const f of fs.readdirSync(PUB_DIR)) {
+      if (f.startsWith('.')) continue;
+      const src = path.join(PUB_DIR, f);
+      if (fs.statSync(src).isFile()) {
+        fs.copyFileSync(src, path.join(DOCS_DIR, f));
+        console.log(`  コピー: public/${f} → docs/${f}`);
+      }
+    }
+  }
   fs.writeFileSync(path.join(DOCS_DIR, '.nojekyll'), '', 'utf8');
 
   console.log(`\n完了: ${cards.length}件を docs/c/ に出力しました。一覧は docs/index.html です。`);

@@ -3,9 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
-<meta name="referrer" content="no-referrer">
-<title>ガイコクジンコネクト人材バンク｜{{company.corp}}</title>
+<title>{{seoTitle}}</title>
+<meta name="description" content="{{seoDesc}}">
+{{#pageUrl}}<link rel="canonical" href="{{pageUrl}}">{{/pageUrl}}
+
+<!-- SNS・LINEで共有したときの表示 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{company.brand}}">
+<meta property="og:title" content="{{seoTitle}}">
+<meta property="og:description" content="{{seoDesc}}">
+{{#pageUrl}}<meta property="og:url" content="{{pageUrl}}">{{/pageUrl}}
+{{#ogpUrl}}<meta property="og:image" content="{{ogpUrl}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ogpUrl}}">{{/ogpUrl}}
+<meta name="twitter:title" content="{{seoTitle}}">
+<meta name="twitter:description" content="{{seoDesc}}">
 <style>
 {{&css}}
 </style>
@@ -35,6 +49,10 @@
     御社が会ってみたいと思われた時点で日程を調整します。<b>会うかどうかは、御社にお決めいただくもの</b>だと考えています。
   </p>
   <div class="count"><b>{{count}}</b><span>名が求職中です（{{today}}現在）</span></div>
+  <p class="intro">
+    介護、建設、宿泊、外食など、特定技能をはじめとする在留資格での採用をご検討の企業さまへ。
+    愛知県大府市を拠点に、外国人材の採用と受入れをご支援しています。
+  </p>
 </div></section>
 
 <section class="wrap"><div class="cond">

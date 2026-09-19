@@ -33,6 +33,7 @@ a{color:var(--blue)}
   border:1px solid var(--line); border-left:5px solid var(--blue); border-radius:3px;
   padding:12px 22px; background:var(--tint)}
 .hero .count b{font-size:32px; color:var(--blue); line-height:1}
+.hero .intro{margin:22px 0 0; font-size:14.5px; color:var(--mid); max-width:760px; line-height:1.9}
 .hero .count span{font-size:14px; color:var(--mid)}
 
 /* ---------- 掲載の条件 ---------- */
