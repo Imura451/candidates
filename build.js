@@ -408,17 +408,9 @@ function buildView(c, slug, logo) {
   const faceImg = findPhoto((c.photos || {}).face, id, slug, 'face');
   if (!faceImg) warn(`${id}: 顔写真がありません → assets/photos/${slug}/face.jpg を置いてください`);
 
-  /* 問い合わせボタン（候補者IDを件名に入れたメールが立ち上がる） */
-  const subject = `候補者ID ${id}（${displayName}）について`;
-  const mailBody = [
-    `${COMPANY.brand}　${COMPANY.person} 様`, '',
-    `候補者ID ${id}（${displayName}）について、お問い合わせします。`, '',
-    '御社名：',
-    'ご担当者名：',
-    'ご連絡先：', '',
-    'ご希望（オンライン面接の申込／履歴書の請求／その他）：', ''
-  ].join('\r\n');
-  const mailto = `mailto:${COMPANY.mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+  /* メールソフトから直接送る方向けの件名。
+     フォームが使えない環境でも、候補者が分かるようにしています */
+  const mailSubject = encodeURIComponent(`候補者 ${id}（${displayName}）について`);
 
   /* 人材バンクの絞り込み用 */
   const residence = s(info.residence);
@@ -454,7 +446,7 @@ function buildView(c, slug, logo) {
     video,
     comment: s(c.comment),
     faceImg,
-    mailto,
+    mailSubject,
     buildDate: new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })
   };
 }
@@ -466,7 +458,8 @@ function main() {
   for (const d of [DATA_DIR, OUT_DIR, PHOTO_DIR]) {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   }
-  for (const f of ['template.html', 'style.css', 'index.html', '404.html', 'bank.html', 'bank.css', 'form.html']) {
+  for (const f of ['template.html', 'style.css', 'index.html', '404.html', 'bank.html', 'bank.css', 'form.html',
+                    'form.css', 'form-candidate.html']) {
     if (!fs.existsSync(path.join(SRC_DIR, f))) {
       console.error(`エラー: src/${f} がありません。雛形ファイルを戻してください。`);
       process.exit(1);
@@ -482,19 +475,22 @@ function main() {
 
   const tplCandidate = fs.readFileSync(path.join(SRC_DIR, 'template.html'), 'utf8');
   const tplIndex = fs.readFileSync(path.join(SRC_DIR, 'index.html'), 'utf8');
-  const css = fs.readFileSync(path.join(SRC_DIR, 'style.css'), 'utf8').replace(/\s+$/, '');
+  /* フォームの見た目（form.css）は、候補者ページと人材バンクで共用しています */
+  const formCss = fs.readFileSync(path.join(SRC_DIR, 'form.css'), 'utf8').replace(/\s+$/, '');
+  const css = [
+    fs.readFileSync(path.join(SRC_DIR, 'style.css'), 'utf8').replace(/\s+$/, ''),
+    formCss
+  ].join('\n');
+  const tplFormCandidate = fs.readFileSync(path.join(SRC_DIR, 'form-candidate.html'), 'utf8');
 
   /* ご紹介終了の画面。存在しないURL（404）と、就職が決まった方のURLの両方で使います */
   const tplGone = fs.readFileSync(path.join(SRC_DIR, '404.html'), 'utf8');
-  const goneBody = [
-    `${COMPANY.brand}　${COMPANY.person} 様`, '',
-    '候補者のご紹介について、お問い合わせします。', '',
-    '御社名：', 'ご担当者名：', 'ご連絡先：', '',
-    'ご希望の職種：', 'ご希望の勤務地：', 'ご希望の時期：', ''
-  ].join('\r\n');
   const goneView = {
     css, logo, company: COMPANY,
-    mailto: `mailto:${COMPANY.mail}?subject=${encodeURIComponent('候補者のご紹介について')}&body=${encodeURIComponent(goneBody)}`
+    /* 人材バンクの問い合わせフォームへ送ります。
+       このページは docs/404.html と docs/c/<slug>.html の両方に出るため、
+       相対ではなく絶対URLにしています */
+    bankContact: pagesBase() + '#contact'
   };
 
   const salt = loadSalt();
@@ -554,6 +550,8 @@ function main() {
     const view = buildView(c, slug, logo);
     view.css = css;
     view.status = status;
+    /* 候補者IDとお名前が入った状態のフォーム。件名にもそのまま入ります */
+    view.formHtml = render(tplFormCandidate, view);
 
     if (status === ST_CLOSED) {
       /* 就職が決まった方。URLは生かしたまま、ご紹介終了の画面に差し替えます */
@@ -717,7 +715,10 @@ function main() {
     warn('assets/ogp.png がありません。SNSで共有したときの画像が出ません');
   }
 
-  const bankCss = fs.readFileSync(path.join(SRC_DIR, 'bank.css'), 'utf8').replace(/\s+$/, '');
+  const bankCss = [
+    fs.readFileSync(path.join(SRC_DIR, 'bank.css'), 'utf8').replace(/\s+$/, ''),
+    formCss
+  ].join('\n');
   fs.writeFileSync(path.join(DOCS_DIR, 'index.html'), render(
     fs.readFileSync(path.join(SRC_DIR, 'bank.html'), 'utf8'), {
       css: bankCss, logo, company: COMPANY,

@@ -72,13 +72,8 @@
   </section>
   {{/comment}}
 
-  <!-- 5. 問い合わせ -->
-  <section class="ask">
-    <h2>この候補者について</h2>
-    <p class="lead">オンライン面接のお申し込み、履歴書のご請求など、お気軽にご連絡ください。</p>
-    <a class="btn" href="{{mailto}}">この候補者について問い合わせる<small>メールが立ち上がります。件名に候補者ID {{id}} が入ります</small></a>
-    <p class="alt">ボタンが使えないときは <a href="mailto:{{company.mail}}">{{company.mail}}</a> 宛にご連絡ください。件名に<b>候補者ID {{id}}</b> とお書き添えいただけると助かります。</p>
-  </section>
+  <!-- 5. 問い合わせ（src/form-candidate.html。候補者IDとお名前が入った状態で出ます） -->
+{{&formHtml}}
 
 </main>
 

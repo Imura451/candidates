@@ -1,0 +1,62 @@
+/* 問い合わせフォームの見た目。
+   人材バンク（bank.css）と候補者ページ（style.css）の両方に読み込まれます。
+   配色は2つのページで違うため、色は変数で受け取り、
+   その変数が無いページでは2つめの値にさかのぼるようにしています。
+     人材バンク   … --blue / --cta / --mid
+     候補者ページ … --red が主役。--mid は無いので --gray へ */
+
+.form-wrap{padding:46px 0 54px; border-top:1px solid var(--line)}
+.form-wrap h2{margin:0 0 8px; font-size:22px; letter-spacing:.04em}
+.form-lead{margin:0 0 22px; font-size:14.5px; color:var(--mid, var(--gray, #55464a))}
+.kinds{display:flex; gap:10px; margin-bottom:26px; flex-wrap:wrap}
+.kind{flex:1 1 240px; text-align:left; border:1px solid var(--line); background:#fff; border-radius:6px;
+  padding:14px 18px; font-size:15.5px; font-weight:700; color:var(--mid, var(--gray, #55464a));
+  cursor:pointer; font-family:inherit; line-height:1.5}
+.kind small{display:block; font-weight:400; font-size:12.5px; margin-top:3px; opacity:.85}
+.kind:hover{border-color:var(--blue, var(--red, #004AAC))}
+.kind.on{background:var(--blue, var(--red, #004AAC)); border-color:var(--blue, var(--red, #004AAC)); color:#fff}
+.f2{display:flex; gap:16px; flex-wrap:wrap}
+.f2 > .fld{flex:1 1 250px}
+.fld{margin:0 0 16px}
+.fld label{display:block; font-size:13px; color:var(--mid, var(--gray, #55464a)); margin-bottom:5px; font-weight:700}
+.fld label i{font-style:normal; font-size:11px; color:#fff; background:var(--cta, var(--red, #C8400F)); border-radius:2px;
+  padding:1px 6px; margin-left:7px; font-weight:400; vertical-align:1px}
+.fld label .en{display:none; font-weight:400; opacity:.8}
+.bilingual .fld label .en{display:inline; margin-left:6px}
+.bilingual .fld label .en::before{content:"／ "}
+.fld input,.fld textarea{width:100%; border:1px solid var(--line); border-radius:5px; padding:11px 13px;
+  font-size:15.5px; font-family:inherit; color:var(--ink); background:#fff; line-height:1.7}
+.fld input:focus,.fld textarea:focus{outline:2px solid var(--blue, var(--red, #004AAC)); outline-offset:-1px;
+  border-color:var(--blue, var(--red, #004AAC))}
+.fld textarea{resize:vertical}
+
+/* 読み取り専用の欄（候補者ページの「お問い合わせの対象」）。
+   書き換えられると件名と中身が食い違うため、押せないようにしています */
+.fld input[readonly]{background:var(--tint, #f4f9fa); color:var(--ink); font-weight:700; cursor:default}
+.fld input[readonly]:focus{outline:none; border-color:var(--line)}
+
+.hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.agree{margin:4px 0 18px; font-size:12.5px; color:var(--mid, var(--gray, #55464a))}
+.submit{margin:0}
+.btn-send{background:var(--cta, var(--red, #C8400F)); color:#fff; border:0; border-radius:5px; padding:15px 46px;
+  font-size:16.5px; font-weight:700; font-family:inherit; cursor:pointer; letter-spacing:.04em}
+.btn-send:hover{filter:brightness(.88)}
+.btn-send:disabled{opacity:.6; cursor:default}
+.fmsg{margin:16px 0 0; padding:14px 16px; border-radius:5px; font-size:14.5px; line-height:1.8}
+.fmsg.ok{background:#eef7ee; border:1px solid #bcdcbc; color:#20612a}
+.fmsg.ng{background:#fdf1ec; border:1px solid #f0cdbd; color:#a8340b}
+.direct{margin-top:30px; padding-top:22px; border-top:1px dashed var(--line)}
+.direct p{margin:0 0 6px; font-size:14px; color:var(--mid, var(--gray, #55464a))}
+.direct .addr{font-size:15.5px}
+.direct .addr a{font-weight:700; text-decoration:none}
+
+@media(max-width:820px){
+  .kind{flex:1 1 100%}
+  .btn-send{width:100%}
+}
+
+/* 紙に印刷するときはフォームを出しません。
+   候補者ページは面接資料として印刷されるため、入力欄は邪魔になります */
+@media print{
+  .form-wrap{display:none !important}
+}

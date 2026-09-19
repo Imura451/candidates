@@ -1,0 +1,112 @@
+<!-- ============================================================================
+     候補者ページの問い合わせフォーム
+     人材バンクのフォーム（form.html）と送り先は同じ Cloudflare Worker です。
+     そこから Gmail と Lark の両方へ届きます。
+
+     人材バンクのものと違う点
+       ・企業／送り出し機関の切り替えはありません（このページは企業向けのため）
+       ・どの候補者についての問い合わせかを、最初から入れてあります
+       ・メールの件名に候補者IDとお名前が入ります（下の kind がそのまま件名になります）
+     ============================================================================ -->
+<section class="form-wrap" id="contact">
+  <h2>この候補者について問い合わせる</h2>
+  <p class="form-lead">
+    どのパソコン・スマートフォンからでも送れます。メールソフトは必要ありません。
+  </p>
+
+  <form id="cform" novalidate>
+    <input type="hidden" name="kind" value="候補者 {{id}}（{{displayName}}）について">
+    <input type="hidden" name="page" value="候補者ページ {{id}}">
+    <p class="hp"><label>この欄は空のままにしてください <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+    <p class="fld"><label for="fCand">お問い合わせの対象</label>
+      <input id="fCand" name="candidate" value="{{id}}　{{displayName}}" readonly></p>
+
+    <div class="f2">
+      <p class="fld"><label for="fCompany">会社名<i>必須</i></label>
+        <input id="fCompany" name="company" required autocomplete="organization"></p>
+      <p class="fld"><label for="fName">ご担当者名<i>必須</i></label>
+        <input id="fName" name="name" required autocomplete="name"></p>
+    </div>
+
+    <div class="f2">
+      <p class="fld"><label for="fMail">メールアドレス<i>必須</i></label>
+        <input id="fMail" name="email" type="email" required autocomplete="email" inputmode="email"></p>
+      <p class="fld"><label for="fTel">電話番号</label>
+        <input id="fTel" name="tel" autocomplete="tel" inputmode="tel"></p>
+    </div>
+
+    <p class="fld"><label for="fMsg">ご用件</label>
+      <textarea id="fMsg" name="message" rows="5"
+        placeholder="オンライン面接のお申し込み、履歴書のご請求など。ご希望の時期があればお書き添えください。"></textarea></p>
+
+    <p class="agree">
+      いただいた内容は、ご連絡と候補者のご紹介にのみ使用します。
+    </p>
+
+    <p class="submit"><button type="submit" class="btn-send" id="fSend">送信する</button></p>
+    <p class="fmsg" id="fMsgBox" hidden></p>
+  </form>
+
+  <div class="direct">
+    <p><b>メールソフトから直接お送りいただくこともできます。</b></p>
+    <p class="addr"><a href="mailto:{{company.mail}}?subject={{mailSubject}}">{{company.mail}}</a>　／　お電話 <a href="tel:09017284593">090-1728-4593</a></p>
+  </div>
+</section>
+
+<script>
+(function () {
+  var ENDPOINT = 'https://gaikokujinconnect.d4station-info.workers.dev/api/contact';
+  var form = document.getElementById('cform');
+  if (!form) return;
+  var box = document.getElementById('fMsgBox');
+  var send = document.getElementById('fSend');
+
+  function show(text, ok) {
+    box.textContent = text;
+    box.className = 'fmsg ' + (ok ? 'ok' : 'ng');
+    box.hidden = false;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var data = {};
+    new FormData(form).forEach(function (v, k) { data[k] = String(v).trim(); });
+
+    if (!data.company || !data.name || !data.email) {
+      show('会社名・ご担当者名・メールアドレスをご入力ください。', false);
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) {
+      show('メールアドレスの形式をご確認ください。', false);
+      return;
+    }
+
+    send.disabled = true;
+    send.textContent = '送信しています…';
+    box.hidden = true;
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
+      .then(function (d) {
+        if (d && d.ok) {
+          form.reset();
+          show('送信しました。ありがとうございます。2営業日以内にご返信します。', true);
+        } else {
+          show('送信できませんでした。お手数ですが gaikokujin18@gmail.com 宛にお送りください。', false);
+        }
+      })
+      .catch(function () {
+        show('送信できませんでした。お手数ですが gaikokujin18@gmail.com 宛にお送りください。', false);
+      })
+      .finally(function () {
+        send.disabled = false;
+        send.textContent = '送信する';
+      });
+  });
+})();
+</script>
