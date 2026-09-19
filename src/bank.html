@@ -30,10 +30,14 @@
   <img src="{{logo}}" alt="{{company.brand}}">
   <b>{{company.brand}}</b>
   <nav class="nav">
-    <a href="{{company.site}}/service">サービス</a>
-    <a href="{{company.site}}/shikaku">在留資格ガイド</a>
-    <a href="{{company.site}}/profile">代表紹介</a>
-    <a href="{{company.site}}/contact" class="btn-s">無料相談する</a>
+    <a href="{{company.site}}/shikaku.html">在留資格ガイド</a>
+    <a href="{{company.site}}/service.html">サービス</a>
+    <a class="cur" aria-current="page">人材バンク</a>
+    <a href="{{company.site}}/nihongo-cafe/">日本語教室</a>
+    <a href="{{company.site}}/profile.html">代表紹介</a>
+    <a href="{{company.site}}/contact.html">会社概要</a>
+    <a href="tel:09017284593" class="btn-tel">090-1728-4593</a>
+    <a href="mailto:{{company.mail}}?subject=%E4%BA%BA%E6%9D%90%E3%83%90%E3%83%B3%E3%82%AF%E3%81%AE%E5%80%99%E8%A3%9C%E8%80%85%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" class="btn-s">メールで相談</a>
   </nav>
 </div></header>
 
@@ -111,6 +115,26 @@
   <div class="empty">現在、ご紹介できる候補者がいません。ご希望の職種と時期をお知らせいただければ、お探しします。</div>
   {{/hasCards}}
 </section>
+
+<section class="wrap"><div class="ask">
+  <h2>気になる方がいましたら、ご連絡ください</h2>
+  <p>
+    履歴書と職務経歴書をお送りします。オンラインでの面談・面接の日程も調整します。
+    ご希望の職種や時期だけでも構いません。まずはお気軽にどうぞ。
+  </p>
+  <div class="ways">
+    <div class="way">
+      <b>お電話</b>
+      <a class="big" href="tel:09017284593">090-1728-4593</a>
+      <p class="sml">{{company.person}}（{{company.title}}）に直接つながります</p>
+    </div>
+    <div class="way">
+      <b>メール</b><br>
+      <a class="btn-mail" href="mailto:{{company.mail}}?subject=%E4%BA%BA%E6%9D%90%E3%83%90%E3%83%B3%E3%82%AF%E3%81%AE%E5%80%99%E8%A3%9C%E8%80%85%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">メールで問い合わせる</a>
+      <p class="sml">{{company.mail}}</p>
+    </div>
+  </div>
+</div></section>
 
 <section class="sendbox"><div class="wrap">
   <div class="sb">
