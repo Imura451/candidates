@@ -1,0 +1,132 @@
+/* 人材バンク（企業向け一覧）のデザイン。
+   コーポレートサイト（03_web/site/css/style.css）の配色に合わせています。 */
+:root{
+  --blue:#004AAC; --blue-dark:#003A87; --teal:#0D7C85; --green:#124646;
+  --cta:#C8400F; --ink:#261817; --mid:#55464a; --line:#dfe6e9;
+  --bg:#fff; --tint:#f4f9fa;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;
+  font-size:16px; line-height:1.9; letter-spacing:.03em}
+a{color:var(--blue)}
+.wrap{max-width:1040px; margin:0 auto; padding:0 24px}
+
+/* ---------- 上部バー ---------- */
+.top{border-bottom:1px solid var(--line); background:#fff; position:sticky; top:0; z-index:9}
+.top .wrap{display:flex; align-items:center; gap:14px; min-height:64px}
+.top img{height:40px; width:auto; display:block}
+.top b{font-size:15px; letter-spacing:.06em}
+.top .nav{margin-left:auto; display:flex; gap:22px; align-items:center; font-size:14px}
+.top .nav a{color:var(--mid); text-decoration:none}
+.top .nav a:hover{color:var(--blue)}
+.top .nav .btn-s{background:var(--cta); color:#fff; padding:9px 18px; border-radius:4px; font-weight:700}
+
+/* ---------- ヒーロー ---------- */
+.hero{padding:52px 0 42px; border-bottom:1px solid var(--line)}
+.hero .eyebrow{color:var(--teal); font-size:13px; font-weight:700; letter-spacing:.14em; margin:0}
+.hero h1{margin:10px 0 0; font-size:34px; line-height:1.45; letter-spacing:.02em; color:var(--blue)}
+.hero .lead{margin:18px 0 0; font-size:16.5px; max-width:720px}
+.hero .lead b{background:linear-gradient(transparent 62%, #d9e7f7 62%)}
+.hero .count{display:inline-flex; align-items:baseline; gap:10px; margin-top:26px;
+  border:1px solid var(--line); border-left:5px solid var(--blue); border-radius:3px;
+  padding:12px 22px; background:var(--tint)}
+.hero .count b{font-size:32px; color:var(--blue); line-height:1}
+.hero .count span{font-size:14px; color:var(--mid)}
+
+/* ---------- 掲載の条件 ---------- */
+.cond{padding:42px 0 40px; border-bottom:1px solid var(--line)}
+.cond h2{margin:0 0 6px; font-size:21px; letter-spacing:.04em}
+.cond .sub{margin:0 0 24px; font-size:14px; color:var(--mid)}
+.conds{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+.conds > div{border:1px solid var(--line); border-top:3px solid var(--blue); border-radius:4px;
+  padding:18px 18px 20px; background:#fff}
+.conds .n{display:inline-block; width:24px; height:24px; border-radius:50%; background:var(--blue);
+  color:#fff; font-size:13px; font-weight:700; text-align:center; line-height:24px; margin-bottom:8px}
+.conds b{display:block; font-size:16px; margin-bottom:5px}
+.conds p{margin:0; font-size:14px; color:var(--mid); line-height:1.8}
+
+/* ---------- 絞り込み ---------- */
+.filter{padding:34px 0 6px}
+.filter h2{font-size:21px; margin:0 0 20px; letter-spacing:.04em}
+.frow{display:flex; gap:8px; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap}
+.frow .lb{font-size:12.5px; color:var(--mid); width:76px; flex:none; padding-top:8px}
+.frow .pills{flex:1; display:flex; flex-wrap:wrap; gap:8px}
+.pill{border:1px solid var(--line); background:#fff; color:var(--mid); border-radius:999px;
+  padding:6px 15px; font-size:13.5px; cursor:pointer; font-family:inherit; white-space:nowrap}
+.pill:hover{border-color:var(--blue); color:var(--blue)}
+.pill.on{background:var(--blue); border-color:var(--blue); color:#fff; font-weight:700}
+.othernote{margin:6px 0 0 84px; font-size:13px; color:var(--mid)}
+.othernote a{font-weight:700; text-decoration:none}
+.hits{margin:20px 0 0; font-size:14px; color:var(--mid)}
+.hits b{color:var(--ink); font-size:17px}
+.empty{margin:28px 0 40px; padding:28px; border:1px dashed var(--line); border-radius:6px;
+  text-align:center; color:var(--mid); font-size:15px; background:var(--tint)}
+
+/* ---------- カード ---------- */
+.grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px; padding:18px 0 40px}
+.card{display:flex; gap:18px; border:1px solid var(--line); border-radius:6px; padding:20px;
+  text-decoration:none; color:inherit; background:#fff; transition:.15s}
+.card:hover{border-color:var(--blue); box-shadow:0 6px 18px rgba(0,74,172,.10); transform:translateY(-2px)}
+.card .ph{width:104px; height:139px; flex:none; object-fit:cover; border-radius:4px;
+  border:1px solid var(--line); background:var(--tint)}
+.card .noimg{display:flex; align-items:center; justify-content:center; text-align:center;
+  color:var(--mid); font-size:12px; line-height:1.5}
+.card .b{flex:1; min-width:0}
+.card .nm{font-size:20px; font-weight:700; line-height:1.3; margin:0}
+.card .nm .flag{width:24px; height:16px; display:inline-block; vertical-align:2px;
+  margin-right:7px; border:1px solid var(--line)}
+.card .nm .flag svg{display:block; width:100%; height:100%}
+.card .sub{margin:5px 0 0; font-size:13px; color:var(--mid)}
+.card .visa{margin:9px 0 0; font-size:12.5px; color:var(--teal); font-weight:700; letter-spacing:.04em}
+.card .job{margin:3px 0 0; font-size:15.5px; font-weight:700; color:var(--blue); line-height:1.5}
+.tags{margin-top:11px; display:flex; flex-wrap:wrap; gap:6px}
+.tag{font-size:12px; border:1px solid var(--line); background:var(--tint); border-radius:3px;
+  padding:3px 9px; color:var(--mid)}
+.tag.jp{border-color:#b9d3f0; background:#eef5fd; color:var(--blue); font-weight:700}
+.tag.mv{border-color:#f0cdbd; background:#fdf1ec; color:var(--cta); font-weight:700}
+.more{margin-top:12px; font-size:13px; color:var(--blue); font-weight:700}
+
+/* ---------- 送り出し機関の皆さまへ ---------- */
+.sendbox{background:var(--green); color:#fff; padding:46px 0}
+.sb{display:flex; gap:40px; align-items:flex-start}
+.sb-l{flex:1; min-width:0}
+.eyebrow2{margin:0; font-size:12.5px; font-weight:700; letter-spacing:.14em; color:#8ed3d8}
+.sb h2{margin:8px 0 14px; font-size:24px; letter-spacing:.03em; color:#fff}
+.sb p{margin:0 0 16px; font-size:15px; line-height:1.9; color:#e2efef}
+.steps{margin:0; padding-left:0; list-style:none; counter-reset:st}
+.steps li{position:relative; padding-left:34px; margin-bottom:10px; font-size:14.5px;
+  color:#e2efef; line-height:1.8}
+.steps li::before{counter-increment:st; content:counter(st); position:absolute; left:0; top:2px;
+  width:23px; height:23px; border-radius:50%; background:#fff; color:var(--green);
+  font-size:12.5px; font-weight:700; text-align:center; line-height:23px}
+.steps b{color:#fff}
+.note2{font-size:13px; color:#a9c7c7; margin-top:16px}
+.sb-r{flex:none; width:260px; text-align:center}
+.btn-big{display:block; background:var(--cta); color:#fff; text-decoration:none; font-weight:700;
+  padding:17px 20px; border-radius:5px; font-size:16px}
+.sb-note{font-size:12.5px; margin-top:10px; color:#a9c7c7}
+
+/* ---------- 対応分野 ---------- */
+.scope{border-top:1px solid var(--line); padding:34px 0 20px}
+.scope h3{margin:0 0 10px; font-size:16px}
+.scope p{margin:0 0 12px; font-size:13.5px; color:var(--mid)}
+.scope .list{font-size:13.5px; color:var(--mid); line-height:2.1}
+
+footer{border-top:1px solid var(--line); padding:22px 0 40px; font-size:12.5px;
+  color:var(--mid); line-height:1.9}
+footer a{text-decoration:none}
+
+@media(max-width:820px){
+  body{font-size:15px}
+  .conds{grid-template-columns:1fr; gap:14px}
+  .grid{grid-template-columns:1fr}
+  .hero{padding:34px 0 30px}
+  .hero h1{font-size:25px}
+  .top .nav a:not(.btn-s){display:none}
+  .frow .lb{width:100%; padding-top:0}
+  .othernote{margin-left:0}
+  .sb{flex-direction:column; gap:24px}
+  .sb-r{width:100%}
+}

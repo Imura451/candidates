@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>ガイコクジンコネクト人材バンク｜{{company.corp}}</title>
+<style>
+{{&css}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <img src="{{logo}}" alt="{{company.brand}}">
+  <b>{{company.brand}}</b>
+  <nav class="nav">
+    <a href="{{company.site}}/service">サービス</a>
+    <a href="{{company.site}}/shikaku">在留資格ガイド</a>
+    <a href="{{company.site}}/profile">代表紹介</a>
+    <a href="{{company.site}}/contact" class="btn-s">無料相談する</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <p class="eyebrow">人材バンク</p>
+  <h1>世界各国と日本国内から、<br>ご相談をいただいた方を掲載しています</h1>
+  <p class="lead">
+    弊社が推薦する人材ではありません。ご相談をいただいた方を、<b>御社が判断できる材料をそろえたうえで</b>掲載しています。
+    <b>すでに日本にお住まいの転職希望者</b>も含まれます。新たに入国する手続きが不要なぶん、入社までの期間が短くなります。
+  </p>
+  <p class="lead">
+    履歴書と職務経歴書は、ご要望をいただいてからお送りします。オンラインでの面談・面接も、
+    御社が会ってみたいと思われた時点で日程を調整します。<b>会うかどうかは、御社にお決めいただくもの</b>だと考えています。
+  </p>
+  <div class="count"><b>{{count}}</b><span>名が求職中です（{{today}}現在）</span></div>
+</div></section>
+
+<section class="wrap"><div class="cond">
+  <h2>掲載の条件</h2>
+  <p class="sub">この3つがそろわない方は、掲載していません。</p>
+  <div class="conds">
+    <div><span class="n">1</span><b>履歴書</b><p>代表の井村が内容を確認します。記載が足りない場合は、書き直していただいたうえで掲載します。</p></div>
+    <div><span class="n">2</span><b>職務経歴書</b><p>どの現場で、何をどこまで担当していたかを本人に書いていただきます。</p></div>
+    <div><span class="n">3</span><b>井村による面談</b><p>オンラインで直接話を聞きます。その様子を動画でそのままご覧いただけます。</p></div>
+  </div>
+</div></section>
+
+<section class="wrap filter">
+  <h2>候補者一覧</h2>
+  {{#rows}}
+  <div class="frow" data-group="{{key}}">
+    <span class="lb">{{label}}</span>
+    <div class="pills">
+      <button class="pill on" data-v="">すべて</button>
+      {{#opts}}<button class="pill" data-v="{{v}}">{{t}}</button>{{/opts}}
+    </div>
+  </div>
+  {{#note}}<p class="othernote">ほかの分野もご相談いただけます。<a href="#scope">対応できる分野を見る →</a></p>{{/note}}
+  {{/rows}}
+  <p class="hits"><b id="hits">{{count}}</b> 名が該当します</p>
+</section>
+
+<section class="wrap">
+  {{#hasCards}}
+  <div class="grid" id="grid">
+    {{#cards}}
+    <a class="card" href="{{href}}" target="_blank" rel="noopener"
+       data-loc="{{locKey}}" data-nat="{{nationality}}" data-res="{{residence}}"
+       data-field="{{fieldsAttr}}" data-jp="{{jpCode}}">
+      {{#photo}}<img class="ph" src="{{photo}}" alt="">{{/photo}}
+      {{^photo}}<div class="ph noimg">写真<br>準備中</div>{{/photo}}
+      <div class="b">
+        <p class="nm"><span class="flag">{{&flag}}</span>{{displayName}}</p>
+        <p class="sub">{{facts}}</p>
+        {{#residence}}<p class="visa">{{residence}}</p>{{/residence}}
+        <p class="job">{{desiredJob}}</p>
+        <div class="tags">
+          {{#jpLabel}}<span class="tag jp">{{jpLabel}}</span>{{/jpLabel}}
+          {{#stayLabel}}<span class="tag">{{stayLabel}}</span>{{/stayLabel}}
+          {{#areaLabel}}<span class="tag">{{areaLabel}}</span>{{/areaLabel}}
+          <span class="tag mv">▶ 面談動画</span>
+        </div>
+        <p class="more">詳しく見る →</p>
+      </div>
+    </a>
+    {{/cards}}
+  </div>
+  <div class="empty" id="empty" hidden>条件に合う候補者がいません。絞り込みを変えてお試しください。</div>
+  {{/hasCards}}
+  {{^hasCards}}
+  <div class="empty">現在、ご紹介できる候補者がいません。ご希望の職種と時期をお知らせいただければ、お探しします。</div>
+  {{/hasCards}}
+</section>
+
+<section class="sendbox"><div class="wrap">
+  <div class="sb">
+    <div class="sb-l">
+      <p class="eyebrow2">送り出し機関の皆さまへ</p>
+      <h2>掲載のご依頼を受け付けています</h2>
+      <p>
+        国を問わず、日本での就職を希望される方の掲載をお受けしています。
+        掲載にあたって弊社が行うのは、書類の確認と本人との面談です。それ以外の条件は設けていません。
+      </p>
+      <ol class="steps">
+        <li><b>ご連絡をいただく</b>　対象の方と、希望される職種をお知らせください</li>
+        <li><b>書類を整える</b>　履歴書と職務経歴書を確認し、足りない部分は書き直しをお願いします</li>
+        <li><b>面談を収録する</b>　代表の井村がオンラインで直接お話を伺い、そのまま掲載します</li>
+      </ol>
+      <p class="note2">掲載の条件や費用は、ケースによって異なります。まずはご相談ください。</p>
+    </div>
+    <div class="sb-r">
+      <a class="btn-big" href="mailto:{{company.mail}}?subject=%E4%BA%BA%E6%9D%90%E3%83%90%E3%83%B3%E3%82%AF%E3%81%B8%E3%81%AE%E6%8E%B2%E8%BC%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">掲載について問い合わせる</a>
+      <p class="sb-note">日本語・英語でご連絡いただけます</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="wrap" id="scope"><div class="scope">
+  <h3>対応できる在留資格と分野</h3>
+  <p>現在ご紹介できる方がいない分野も、ご相談をいただければお探しします。</p>
+  <p class="list">
+    <b>特定技能1号</b>　{{fields}}<br>
+    <b>特定技能2号</b>　介護を除く分野<br>
+    <b>技術・人文知識・国際業務</b>　エンジニア、通訳、海外取引の担当など<br>
+    <b>育成就労・技能実習生</b>　2027年6月までに着任した技能実習生を含みます
+  </p>
+  <p style="font-size:12.5px;margin-top:14px">※ 制度は変わることがあります。最新の要件は出入国在留管理庁でご確認ください。</p>
+</div></section>
+
+<footer><div class="wrap">
+  {{company.corp}}／{{company.brand}}　<a href="{{company.site}}" target="_blank" rel="noopener">会社サイトを見る</a><br>
+  このページは検索エンジンに登録していません。候補者本人の個人情報保護のため、社外への転送はお控えください。
+</div></footer>
+
+<script>
+(function () {
+  var grid = document.getElementById('grid');
+  if (!grid) return;
+  var cards = [].slice.call(grid.querySelectorAll('.card'));
+  var hits = document.getElementById('hits');
+  var empty = document.getElementById('empty');
+  var sel = {};
+
+  function apply() {
+    var n = 0;
+    cards.forEach(function (card) {
+      var ok = Object.keys(sel).every(function (g) {
+        var want = sel[g];
+        if (!want) return true;
+        var val = card.getAttribute('data-' + g) || '';
+        return g === 'field' ? val.split(',').indexOf(want) >= 0 : val === want;
+      });
+      card.hidden = !ok;
+      if (ok) n++;
+    });
+    hits.textContent = n;
+    if (empty) empty.hidden = n !== 0;
+  }
+
+  document.querySelectorAll('.frow').forEach(function (row) {
+    var g = row.getAttribute('data-group');
+    sel[g] = '';
+    row.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.pill') : null;
+      if (!b) return;
+      row.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('on'); });
+      b.classList.add('on');
+      sel[g] = b.getAttribute('data-v') || '';
+      apply();
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

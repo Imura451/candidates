@@ -65,6 +65,30 @@ const COMPANY = {
  * ------------------------------------------------------------------ */
 const PAGES_BASE = 'https://imura451.github.io/candidates/';
 
+/* ------------------------------------------------------------------ *
+ * 人材バンクの絞り込みで使う区分
+ * ------------------------------------------------------------------ */
+
+/* 在留資格。この順に並びます */
+const RESIDENCES = ['特定技能1号', '特定技能2号', '技術・人文知識・国際業務', '育成就労・技能実習生'];
+
+/* 特定技能1号の分野。この順に並びます。制度が変わったら足してください */
+const FIELDS = [
+  '介護', 'ビルクリーニング', '工業製品製造業', '建設', '造船・舶用工業', '自動車整備',
+  '航空', '宿泊', '自動車運送業', '鉄道', '農業', '漁業', '飲食料品製造業', '外食業',
+  '林業', '木材産業'
+];
+
+/* 日本語。code → 絞り込みボタンの文字 */
+const JP_LEVELS = [
+  ['N1', 'N1'], ['N2', 'N2'], ['N3', 'N3'], ['N4', 'N4'], ['N5', 'N5'],
+  ['JFT', 'JFT-Basic 合格']
+];
+
+/* status の値 */
+const ST_OPEN = '求職中';
+const ST_CLOSED = '決定';
+
 /* 基本情報の表に出す項目（この順で出ます。値の無い行は消えます） */
 const INFO_ROWS = [
   ['visa', '在留資格'],
@@ -387,10 +411,28 @@ function buildView(c, slug, logo) {
   ].join('\r\n');
   const mailto = `mailto:${COMPANY.mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
 
+  /* 人材バンクの絞り込み用 */
+  const residence = s(info.residence);
+  if (residence && RESIDENCES.indexOf(residence) < 0) {
+    warn(`${id}: 在留資格「${residence}」は決めた区分にありません。${RESIDENCES.join('／')} のいずれかにしてください`);
+  }
+  const fields = arr(info.fields);
+  for (const f of fields) {
+    if (FIELDS.indexOf(f) < 0) warn(`${id}: 分野「${f}」は決めた区分にありません。build.js の FIELDS をご確認ください`);
+  }
+  const jpCode = s(info.japaneseCode);
+  if (jpCode && !JP_LEVELS.some(([k]) => k === jpCode)) {
+    warn(`${id}: 日本語コード「${jpCode}」は決めた区分にありません。N1〜N5 か JFT にしてください`);
+  }
+
   return {
     id,
     slug,
     draft: c.draft === true,
+    inJapan: b.inJapan === true,
+    residence,
+    fields,
+    jpCode,
     updated: s(c.updated),
     logo,
     company: COMPANY,
@@ -415,7 +457,7 @@ function main() {
   for (const d of [DATA_DIR, OUT_DIR, PHOTO_DIR]) {
     if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   }
-  for (const f of ['template.html', 'style.css', 'index.html', '404.html']) {
+  for (const f of ['template.html', 'style.css', 'index.html', '404.html', 'bank.html', 'bank.css']) {
     if (!fs.existsSync(path.join(SRC_DIR, f))) {
       console.error(`エラー: src/${f} がありません。雛形ファイルを戻してください。`);
       process.exit(1);
@@ -432,6 +474,19 @@ function main() {
   const tplCandidate = fs.readFileSync(path.join(SRC_DIR, 'template.html'), 'utf8');
   const tplIndex = fs.readFileSync(path.join(SRC_DIR, 'index.html'), 'utf8');
   const css = fs.readFileSync(path.join(SRC_DIR, 'style.css'), 'utf8').replace(/\s+$/, '');
+
+  /* ご紹介終了の画面。存在しないURL（404）と、就職が決まった方のURLの両方で使います */
+  const tplGone = fs.readFileSync(path.join(SRC_DIR, '404.html'), 'utf8');
+  const goneBody = [
+    `${COMPANY.brand}　${COMPANY.person} 様`, '',
+    '候補者のご紹介について、お問い合わせします。', '',
+    '御社名：', 'ご担当者名：', 'ご連絡先：', '',
+    'ご希望の職種：', 'ご希望の勤務地：', 'ご希望の時期：', ''
+  ].join('\r\n');
+  const goneView = {
+    css, logo, company: COMPANY,
+    mailto: `mailto:${COMPANY.mail}?subject=${encodeURIComponent('候補者のご紹介について')}&body=${encodeURIComponent(goneBody)}`
+  };
 
   const salt = loadSalt();
   const base = pagesBase();
@@ -481,8 +536,24 @@ function main() {
       if (!IN_CI) console.log(`  作成: assets/photos/${slug}/  ← ${id} の顔写真 face.jpg はここに置いてください`);
     }
 
+    const status = s(c.status) || ST_OPEN;
+    if (status !== ST_OPEN && status !== ST_CLOSED) {
+      console.error(`エラー: ${f} の "status" は「${ST_OPEN}」か「${ST_CLOSED}」にしてください（いまは「${status}」）`);
+      process.exit(1);
+    }
+
     const view = buildView(c, slug, logo);
     view.css = css;
+    view.status = status;
+
+    if (status === ST_CLOSED) {
+      /* 就職が決まった方。URLは生かしたまま、ご紹介終了の画面に差し替えます */
+      fs.writeFileSync(path.join(OUT_DIR, slug + '.html'), render(tplGone, goneView), 'utf8');
+      written.add(slug + '.html');
+      console.log(`  掲載終了: docs/c/${slug}.html  ← ${f}  (${view.displayName})`);
+      continue;
+    }
+
     const html = render(tplCandidate, view);
     fs.writeFileSync(path.join(OUT_DIR, slug + '.html'), html, 'utf8');
     written.add(slug + '.html');
@@ -511,6 +582,28 @@ function main() {
       hasVideo: !!view.video,
       updated: view.updated || '—',
       url: base ? `${base}c/${slug}.html` : '',
+      /* 人材バンク用 */
+      bank: {
+        slug,
+        href: `c/${slug}.html`,
+        photo: photoName ? `c/${photoName}` : '',
+        displayName: view.displayName,
+        flag: view.flag,
+        facts: view.facts,
+        residence: view.residence,
+        desiredJob: view.desiredJob,
+        locKey: view.inJapan ? 'jp' : 'abroad',
+        nationality: s(b.nationality),
+        fieldsAttr: view.fields.join(','),
+        jpCode: view.jpCode,
+        jpLabel: view.jpCode ? (view.jpCode === 'JFT' ? 'JFT-Basic 合格' : 'JLPT ' + view.jpCode) : '',
+        stayLabel: (() => {
+          const v = (norm(info.japanStay) || {}).value || '';
+          const head = v.split('（')[0].trim();
+          return head ? '日本で' + head : '';
+        })(),
+        areaLabel: (norm(info.workArea) || {}).value || ''
+      },
       /* candidates.json 用 */
       feed: {
         id: slug,
@@ -564,23 +657,56 @@ function main() {
     candidates: published
   }, null, 2) + '\n', 'utf8');
 
-  /* 掲載を終えた候補者のURLを開いたときの画面（GitHub Pages が 404 のときに出します） */
-  const tpl404 = fs.readFileSync(path.join(SRC_DIR, '404.html'), 'utf8');
-  const subject404 = '候補者のご紹介について';
-  const body404 = [
-    `${COMPANY.brand}　${COMPANY.person} 様`, '',
-    '候補者のご紹介について、お問い合わせします。', '',
-    '御社名：',
-    'ご担当者名：',
-    'ご連絡先：', '',
-    'ご希望の職種：',
-    'ご希望の勤務地：',
-    'ご希望の時期：', ''
-  ].join('\r\n');
-  fs.writeFileSync(path.join(DOCS_DIR, '404.html'), render(tpl404, {
-    css, logo, company: COMPANY,
-    mailto: `mailto:${COMPANY.mail}?subject=${encodeURIComponent(subject404)}&body=${encodeURIComponent(body404)}`
-  }), 'utf8');
+  /* ------------------------------------------------------------------ *
+   * 人材バンク（企業向けの一覧）
+   * 絞り込みのボタンは、掲載中の候補者から自動で作ります。
+   * 選択肢が1つしか無い行は、押す意味がないので出しません。
+   * ------------------------------------------------------------------ */
+  const bankCards = cards.filter(c => !c.draft).map(c => c.bank);
+
+  const uniq = (vals) => vals.filter((v, i) => v && vals.indexOf(v) === i);
+  const byOrder = (vals, order) => order.filter(o => vals.indexOf(o) >= 0);
+
+  const locVals = uniq(bankCards.map(c => c.locKey));
+  const rows = [];
+  if (locVals.length > 1) {
+    rows.push({ key: 'loc', label: '現在地', opts: [
+      { v: 'jp', t: '日本国内' }, { v: 'abroad', t: '海外' }
+    ].filter(o => locVals.indexOf(o.v) >= 0) });
+  }
+  const natVals = uniq(bankCards.map(c => c.nationality)).sort();
+  if (natVals.length > 1) {
+    rows.push({ key: 'nat', label: '国籍', opts: natVals.map(v => ({ v, t: v })) });
+  }
+  const resVals = byOrder(uniq(bankCards.map(c => c.residence)), RESIDENCES);
+  if (resVals.length > 1) {
+    rows.push({ key: 'res', label: '在留資格', opts: resVals.map(v => ({ v, t: v })) });
+  }
+  const fieldVals = byOrder(uniq([].concat(...bankCards.map(c => c.fieldsAttr.split(',')))), FIELDS);
+  if (fieldVals.length > 1) {
+    rows.push({ key: 'field', label: '分野', opts: fieldVals.map(v => ({ v, t: v })), note: true });
+  }
+  const jpVals = JP_LEVELS.filter(([k]) => bankCards.some(c => c.jpCode === k));
+  if (jpVals.length > 1) {
+    rows.push({ key: 'jp', label: '日本語', opts: jpVals.map(([v, t]) => ({ v, t })) });
+  }
+  rows.forEach((r, i) => { r._last = i === rows.length - 1; });
+
+  const bankCss = fs.readFileSync(path.join(SRC_DIR, 'bank.css'), 'utf8').replace(/\s+$/, '');
+  fs.writeFileSync(path.join(DOCS_DIR, 'bank.html'), render(
+    fs.readFileSync(path.join(SRC_DIR, 'bank.html'), 'utf8'), {
+      css: bankCss, logo, company: COMPANY,
+      cards: bankCards,
+      count: bankCards.length,
+      hasCards: bankCards.length > 0,
+      rows,
+      residences: RESIDENCES,
+      fields: FIELDS.join('／'),
+      today: new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })
+    }), 'utf8');
+
+  /* 存在しないURLを開いたときの画面 */
+  fs.writeFileSync(path.join(DOCS_DIR, '404.html'), render(tplGone, goneView), 'utf8');
 
   fs.writeFileSync(path.join(DOCS_DIR, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
   fs.writeFileSync(path.join(DOCS_DIR, '.nojekyll'), '', 'utf8');
