@@ -101,6 +101,8 @@ a{color:var(--blue)}
 .tag{font-size:12px; border:1px solid var(--line); background:var(--tint); border-radius:3px;
   padding:3px 9px; color:var(--mid)}
 .tag.jp{border-color:#b9d3f0; background:#eef5fd; color:var(--blue); font-weight:700}
+/* 英語で業務対応できる人。日本語のタグと並ぶので、色を分けて見分けやすくします */
+.tag.en{border-color:#a9d9dc; background:#eef9f9; color:var(--teal); font-weight:700}
 .tag.mv{border-color:#f0cdbd; background:#fdf1ec; color:var(--cta); font-weight:700}
 .more{margin-top:12px; font-size:13px; color:var(--blue); font-weight:700}
 

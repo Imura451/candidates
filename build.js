@@ -102,6 +102,7 @@ const ST_CLOSED = '決定';
 const INFO_ROWS = [
   ['visa', '在留資格'],
   ['japanese', '日本語'],
+  ['english', '英語'],            // 書いてある人だけ出ます（フィリピンなど）
   ['japanStay', '日本での生活'],
   ['experience', '実務経験'],
   ['workArea', '希望勤務地'],
@@ -610,7 +611,9 @@ function main() {
           const head = v.split('（')[0].trim();
           return head ? '日本で' + head : '';
         })(),
-        areaLabel: (norm(info.workArea) || {}).value || ''
+        areaLabel: (norm(info.workArea) || {}).value || '',
+        /* 英語の申告がある人だけ、カードにタグを出します */
+        enLabel: norm(info.english) ? '英語で業務対応' : ''
       },
       /* candidates.json 用 */
       feed: {
