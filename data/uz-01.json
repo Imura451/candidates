@@ -1,0 +1,47 @@
+{
+  "id": "uz-01",
+  "draft": false,
+  "status": "求職中",
+  "updated": "2026-09-23",
+  "basic": {
+    "displayName": "ベフルズ S.",
+    "nationality": "ウズベキスタン",
+    "countryCode": "UZ",
+    "inJapan": false,
+    "age": 20,
+    "gender": "男性",
+    "location": "ウズベキスタン・サマルカンド州"
+  },
+  "info": {
+    "desiredJob": "建設",
+    "residence": "特定技能1号",
+    "fields": [
+      "建設"
+    ],
+    "visa": {
+      "value": "特定技能1号 建設を希望",
+      "note": "建設分野の特定技能1号評価試験に合格しています（2026年8月）。要件は、最新の情報を出入国在留管理庁でご確認ください"
+    },
+    "japanese": {
+      "value": "日本語の試験 N4 相当に合格（2026年6月）",
+      "note": "履歴書には「日本語能力試験(JFT)N4 合格」とあります。JLPT N4 か JFT-Basic かは確認中です"
+    },
+    "japaneseCode": "N4",
+    "japanStay": "",
+    "experience": {
+      "value": "建設 2年6か月（ウズベキスタン）",
+      "note": "塗装、コンクリートの打設、石膏ボードの施工を経験しました（2023年7月〜2025年12月）。2026年1月からはホテルのスタッフとして働いています"
+    },
+    "workArea": "",
+    "availableFrom": ""
+  },
+  "video": {
+    "youtube": "https://youtu.be/MwGepUxfdZU",
+    "duration": "",
+    "topics": []
+  },
+  "comment": "オンラインで面談しました。とても落ち着いていて、目的がはっきりしています。\n地震の多い日本で建築の技術を学び、ウズベキスタンに帰ったら、たくさんの建物を建てたいという希望を持っています。本人は、日本で10年働くつもりです。",
+  "photos": {
+    "face": ""
+  }
+}
