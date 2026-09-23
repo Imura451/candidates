@@ -1,0 +1,47 @@
+{
+  "id": "cn-01",
+  "draft": false,
+  "status": "求職中",
+  "updated": "2026-09-23",
+  "basic": {
+    "displayName": "ザンザン L.",
+    "nationality": "中国",
+    "countryCode": "CN",
+    "inJapan": false,
+    "age": 26,
+    "gender": "男性",
+    "location": "中国・浙江省寧波市"
+  },
+  "info": {
+    "desiredJob": "介護",
+    "residence": "特定技能1号",
+    "fields": [
+      "介護"
+    ],
+    "visa": {
+      "value": "特定技能1号 介護を希望",
+      "note": "介護技能評価試験と介護日本語評価試験を2026年に受験しています（合否は確認中）。要件は、最新の情報を出入国在留管理庁でご確認ください"
+    },
+    "japanese": {
+      "value": "JLPT N2 を受験（2026年）",
+      "note": "合否は確認中です。祖父の看病をきっかけに介護の仕事を志し、独学で日本語の勉強を続けています"
+    },
+    "japaneseCode": "",
+    "japanStay": "",
+    "experience": {
+      "value": "介護の実務は未経験",
+      "note": "前職は配車ドライバー（2021年5月〜2023年10月）と中古車の販売（2024年4月〜2025年11月）。多くのお客様と接する仕事を続けてきました"
+    },
+    "workArea": "",
+    "availableFrom": ""
+  },
+  "video": {
+    "youtube": "https://youtu.be/rZW2l5PXudk",
+    "duration": "",
+    "topics": []
+  },
+  "comment": "オンラインで面談しました。日本語の会話は、これから伸ばしていく段階です。\n本人には、会話の勉強を続けること、介護の仕事をよく理解することを伝えました。「日本に来てほしい」と介護施設から声がかかる人材を目指してほしい、と少し厳しめに話しています。",
+  "photos": {
+    "face": ""
+  }
+}
