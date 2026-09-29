@@ -6,6 +6,19 @@
 <meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
 <meta name="referrer" content="no-referrer">
 <title>{{displayName}}｜候補者のご紹介｜{{company.brand}}</title>
+<!-- SNS・LINEで共有したときの表示。画像は顔写真（無ければ人材バンク共通の画像） -->
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="{{company.brand}}">
+<meta property="og:title" content="{{ogTitle}}">
+<meta property="og:description" content="{{ogDesc}}">
+{{#pageUrl}}<meta property="og:url" content="{{pageUrl}}">{{/pageUrl}}
+{{#ogImage}}<meta property="og:image" content="{{ogImage}}">
+<meta property="og:image:alt" content="{{displayName}}さん">
+<meta name="twitter:image" content="{{ogImage}}">{{/ogImage}}
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="{{#ogIsFace}}summary{{/ogIsFace}}{{^ogIsFace}}summary_large_image{{/ogIsFace}}">
+<meta name="twitter:title" content="{{ogTitle}}">
+<meta name="twitter:description" content="{{ogDesc}}">
 <style>
 {{&css}}
 </style>
@@ -82,7 +95,7 @@
     詳しい経歴・資格をまとめた履歴書は、ご希望に応じてお送りします。<br>
     {{company.corp}}／{{company.brand}}　<a class="site" href="{{company.site}}" target="_blank" rel="noopener noreferrer">会社サイトを見る</a><br>
     <span class="print-only">{{company.site}}</span>
-    このページは検索エンジンに登録していません。URLをご存じの方だけがご覧になれます。候補者本人の個人情報保護のため、社外への転送はお控えください。<br>
+    このページは自由にシェアしていただけます。SNS・メッセージアプリなどで、どんどん拡散してください。<br>
     候補者ID {{id}}　出力日 {{buildDate}}
   </div>
 </footer>

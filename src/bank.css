@@ -55,7 +55,7 @@ a{color:var(--blue)}
 .cond{padding:42px 0 40px; border-bottom:1px solid var(--line)}
 .cond h2{margin:0 0 6px; font-size:21px; letter-spacing:.04em}
 .cond .sub{margin:0 0 24px; font-size:14px; color:var(--mid)}
-.conds{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+.conds{display:grid; grid-template-columns:repeat(2,1fr); gap:22px}
 .conds > div{border:1px solid var(--line); border-top:3px solid var(--blue); border-radius:4px;
   padding:18px 18px 20px; background:#fff}
 .conds .n{display:inline-block; width:24px; height:24px; border-radius:50%; background:var(--blue);

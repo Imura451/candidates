@@ -553,6 +553,14 @@ function main() {
     const view = buildView(c, slug, logo);
     view.css = css;
     view.status = status;
+    /* SNS・LINEで共有したときの表示。画像は顔写真（c/<slug>.jpg として書き出すもの）を使い、
+       写真が無い方は人材バンク共通の画像（ogp.png）にします */
+    const ogFace = photoFile(slug);
+    view.pageUrl = base ? `${base}c/${slug}.html` : '';
+    view.ogIsFace = !!ogFace;
+    view.ogImage = base ? (ogFace ? `${base}c/${slug}${path.extname(ogFace).toLowerCase()}` : `${base}ogp.png`) : '';
+    view.ogTitle = `${view.displayName}さん｜${view.desiredJob || '候補者のご紹介'}｜${COMPANY.brand} 人材バンク`;
+    view.ogDesc = [view.facts, '代表が一人ずつ面談した動画をご覧いただけます。'].filter(Boolean).join('。');
     /* 候補者IDとお名前が入った状態のフォーム。件名にもそのまま入ります */
     view.formHtml = render(tplFormCandidate, view);
 
