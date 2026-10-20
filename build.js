@@ -553,12 +553,22 @@ function main() {
     const view = buildView(c, slug, logo);
     view.css = css;
     view.status = status;
-    /* SNS・LINEで共有したときの表示。画像は顔写真（c/<slug>.jpg として書き出すもの）を使い、
-       写真が無い方は人材バンク共通の画像（ogp.png）にします */
+    /* SNS・LINEで共有したときの表示。
+       1. assets/ogp/<slug>.jpg（インタビュー動画のサムネイル。横長）があれば、それを使います
+       2. 無ければ顔写真（c/<slug>.jpg として書き出すもの）
+       3. それも無ければ人材バンク共通の画像（ogp.png） */
     const ogFace = photoFile(slug);
+    const ogWide = path.join(ASSET_DIR, 'ogp', slug + '.jpg');
     view.pageUrl = base ? `${base}c/${slug}.html` : '';
-    view.ogIsFace = !!ogFace;
-    view.ogImage = base ? (ogFace ? `${base}c/${slug}${path.extname(ogFace).toLowerCase()}` : `${base}ogp.png`) : '';
+    if (fs.existsSync(ogWide)) {
+      fs.copyFileSync(ogWide, path.join(OUT_DIR, slug + '-share.jpg'));
+      written.add(slug + '-share.jpg');
+      view.ogIsFace = false;
+      view.ogImage = base ? `${base}c/${slug}-share.jpg` : '';
+    } else {
+      view.ogIsFace = !!ogFace;
+      view.ogImage = base ? (ogFace ? `${base}c/${slug}${path.extname(ogFace).toLowerCase()}` : `${base}ogp.png`) : '';
+    }
     view.ogTitle = `${view.displayName}さん｜${view.desiredJob || '候補者のご紹介'}｜${COMPANY.brand} 人材バンク`;
     view.ogDesc = [view.facts, '代表が一人ずつ面談した動画をご覧いただけます。'].filter(Boolean).join('。');
     /* 候補者IDとお名前が入った状態のフォーム。件名にもそのまま入ります */
