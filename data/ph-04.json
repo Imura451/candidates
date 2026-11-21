@@ -1,0 +1,53 @@
+{
+  "id": "ph-04",
+  "draft": false,
+  "status": "求職中",
+  "updated": "2026-11-21",
+  "basic": {
+    "displayName": "エーロン L.",
+    "nationality": "フィリピン",
+    "countryCode": "PH",
+    "inJapan": false,
+    "age": 37,
+    "gender": "男性",
+    "location": "フィリピン・パンパンガ州"
+  },
+  "info": {
+    "desiredJob": "建設（鉄筋施工）",
+    "residence": "特定技能1号",
+    "fields": [
+      "建設"
+    ],
+    "visa": {
+      "value": "特定技能1号 建設（鉄筋施工）を希望",
+      "note": "面接シートの記載では、技能実習（鉄筋施工）を修了しているため、日本語試験と技能測定試験は免除です。最新の要件は出入国在留管理庁でご確認ください"
+    },
+    "japanese": {
+      "value": "日本語試験は免除（技能実習を修了）",
+      "note": "面接シートの記載です。日本語の会話の様子は、インタビュー動画でご確認ください"
+    },
+    "japaneseCode": "",
+    "japanStay": {
+      "value": "技能実習 5年（2020年3月〜2025年7月）",
+      "note": "日本の鉄筋の会社で、鉄筋施工・鉄筋組立て作業の技能実習を修了しています"
+    },
+    "experience": {
+      "value": "鉄筋施工・鉄筋組立て 5年（日本）",
+      "note": "フィリピンの運転免許を持っています（運転の経験は16年。仕事での運転の経験はありません）"
+    },
+    "workArea": "",
+    "availableFrom": {
+      "value": "ご相談ください",
+      "note": "実際の入国時期は、在留資格の申請と審査の状況によります"
+    }
+  },
+  "video": {
+    "youtube": "https://youtu.be/v_C5gHWzFbo",
+    "duration": "",
+    "topics": []
+  },
+  "comment": "高速道路の建設、橋梁工事、鉄筋施工、とびの経験を生かすことができるといいですね。",
+  "photos": {
+    "face": ""
+  }
+}
